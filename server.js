@@ -15,10 +15,18 @@ nunjucks.configure("views", {
 })
 
 server.get("/", function(req, res){
-    
     return res.render("home", { items: recipes });
-
 });
+
+server.get("/sobre", function(req, res){
+    return res.render("sobre");
+});
+
+server.get("/receitas", function(req, res){
+    return res.render("receitas", { items: recipes });
+});
+
+
 
 server.listen(5000, function(){
     console.log("server is running");

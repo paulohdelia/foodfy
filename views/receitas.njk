@@ -1,109 +1,31 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.njk" %}
 
-    <head>
-        <title>Foodfy</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+{% block head %}
+    <title>Receitas - Foodfy</title>
+{% endblock %}
 
-    <body>
-        <header>
-            <a href="index.html"><img src="assets/logo.png" alt="Logo do Foodfy" id="logo"></a>
-            <a href="sobre.html" >Sobre</a>
-            <a href="receitas.html" class="i-am-this-page">Receitas</a>
-        </header>
+{% block content %}
 
-        <div class="cards">
+    <div class="cards">
 
+        {% for item in items %}
             <div class="card">
-                <img src="assets/burger.png" alt="Triplo Bacon Burguer">
-                <h1>Triplo bacon burguer</h1>
-                <p>por Jorge Relato</p>
+                <img src="{{ item.image }}" alt="{{ item.title }}">
+                <h1>{{ item.title }}</h1>
+                <p>por {{ item.author }}</p>
             </div>
+        {% endfor %}
 
-            <div class="card">
-                <img src="assets/pizza.png" alt="Pizza 4 estações">
-                <h1>Pizza 4 estações</h1>
-                <p>por Fabiana Melo</p>
-            </div>
+    </div>
 
-            <div class="card">
-                <img src="assets/espaguete.png" alt="Espaguete ao alho">
-                <h1>Espaguete ao alho</h1>
-                <p>por Júlia Kinoto</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/lasanha.png" alt="Lasanha mac n’ cheese">
-                <h1>Lasanha mac n’ cheese</h1>
-                <p>por Juliano Vieira</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/doce.png" alt="Docinhos pão-do-céu">
-                <h1>Docinhos pão-do-céu</h1>
-                <p>por Ricardo Golvea</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/asinhas.png" alt="Asinhas de frango ao barbecue">
-                <h1>Asinhas de frango ao barbecue</h1>
-                <p>por Vânia Steroski</p>
-            </div>
-            
-            <div class="card">
-                <img src="assets/burger.png" alt="Triplo Bacon Burguer">
-                <h1>Triplo bacon burguer</h1>
-                <p>por Jorge Relato</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/pizza.png" alt="Pizza 4 estações">
-                <h1>Pizza 4 estações</h1>
-                <p>por Fabiana Melo</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/espaguete.png" alt="Espaguete ao alho">
-                <h1>Espaguete ao alho</h1>
-                <p>por Júlia Kinoto</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/lasanha.png" alt="Lasanha mac n’ cheese">
-                <h1>Lasanha mac n’ cheese</h1>
-                <p>por Juliano Vieira</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/doce.png" alt="Docinhos pão-do-céu">
-                <h1>Docinhos pão-do-céu</h1>
-                <p>por Ricardo Golvea</p>
-            </div>
-
-            <div class="card">
-                <img src="assets/asinhas.png" alt="Asinhas de frango ao barbecue">
-                <h1>Asinhas de frango ao barbecue</h1>
-                <p>por Vânia Steroski</p>
-            </div>
-            
+    <div class="modal-overlay">
+        <div class="modal">
+            <img id="modal-img" src="" alt="">
+            <h1 id="modal-title"></h1>
+            <p id="modal-author"></p>
+            <p id="modal-exit">Fechar</p>
         </div>
+    </div>
 
-        <footer>
-            <p>Todos direitos reservados, receitas Foodfy.</p>
-        </footer>
-
-        <div class="modal-overlay">
-            <div class="modal">
-                <img id="modal-img" src="" alt="">
-                <h1 id="modal-title"></h1>
-                <p id="modal-author"></p>
-                <p id="modal-exit">Fechar</p>
-            </div>
-        </div>
-
-        <script src="scripts.js"></script>
-    </body>
-
-
-</html>
+    <script src="scripts.js"></script>
+{% endblock %}}
