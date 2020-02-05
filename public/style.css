@@ -4,6 +4,7 @@
     --color-black: #111111;
     --color-light-gray: #999999;
     --color-gray: #777777;
+    --color-dark-gray: #444444;
 }
 
 * {
@@ -30,7 +31,7 @@
 
 #about p {
     font-size: 18px;
-    color: #444444;
+    color: var(--color-dark-gray);
     line-height: 28px;
 }
 
@@ -230,22 +231,78 @@ footer p {
     margin-bottom: 10px;
 }
 
-.card.recipe-info {
+.card.recipe {
     display: grid;
     justify-items: center;
 }
 
-.card.recipe-info img {
-    max-width: 920px;
-    max-height: 280px;
+.card.recipe img {
+    max-width: 100%;
+    max-height: 100%;
+    
     width: auto;
     height: auto;
+
+    cursor: default;
 }
 
-.card.card.recipe-info h1 {
+.card.recipe h1 {
     margin-top: 40px;
     font-size: 200%;
 }
-.card.card.recipe-info p  {
+.card.recipe p  {
     font-size: 150%;
+}
+
+.recipe_content h1{
+    font-size: 24px;
+    color: var(--color-black);
+    margin-top: 40px;
+    margin-bottom: 15px;
+    width: fit-content;
+}
+
+.recipe_content p, 
+.recipe_content li {
+    font-size: 18px;
+    color: var(--color-dark-gray);
+    line-height: 28px;
+}
+
+.recipe_content li {
+    margin-left: 20px;
+}
+
+.recipe_content button {
+    width: fit-content;
+    height: 50%;
+    background-color: white;
+    font-size: 12px;
+    color: var(--color-light-gray);
+
+}
+
+.recipe_content .hide_and_seek {
+    display: grid;
+    grid-auto-columns: auto 1fr;
+    grid-template-areas: "t b";
+    align-items: baseline;
+}
+
+.recipe_content .hide_and_seek h1 {
+    grid-area: t;
+    margin-right: 5px;
+}
+
+.recipe_content .hide_and_seek button {
+    grid-area: b;
+    cursor: pointer;
+}
+
+.ingredient_.hide, 
+.preparation_.hide, 
+.information_.hide {
+    visibility: hidden;
+    height: 0;
+    width: 9999;
 }
