@@ -15,15 +15,21 @@ nunjucks.configure("views", {
 })
 
 server.get("/", function(req, res){
-    return res.render("home", { items: recipes });
+    return res.render("home", { 
+        items: recipes,
+        banner: {
+            image: "https://github.com/Rocketseat/bootcamp-launchbase-desafios-02/blob/master/layouts/assets/chef.png?raw=true",
+            image_alt: "Desenho de um chef de cozinha"   
+        },
+    });
 });
 
-server.get("/sobre", function(req, res){
-    return res.render("sobre");
+server.get("/about", function(req, res){
+    return res.render("about", { link_style: "about" });
 });
 
-server.get("/receitas", function(req, res){
-    return res.render("receitas", { items: recipes });
+server.get("/recipes", function(req, res){
+    return res.render("recipes", { items: recipes, link_style: "recipes"});
 });
 
 
