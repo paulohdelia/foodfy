@@ -130,6 +130,8 @@ header a:hover {
     margin-bottom: 10px;
 }
 
+
+
 footer {
     text-align: center;
     background: #EEEEEE;
@@ -164,25 +166,45 @@ footer p {
 }
 
 .modal {
+    align-self: center;
+    justify-self: center;
     background-color: white;
     width: 45%;
     height: 60%;
     margin: 20vh auto;
-    position: relative;  
     border-radius: 15px;
-    text-align: center;
+    position: relative;
+}
+
+#modal-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-items: center;
+    grid-template-rows: 50% 30% 20%;
+    grid-template-areas: "img" "info" "exit";
 }
 
 #modal-img {
     width: 90%;
-    max-height: 55%;
-    margin-top: 5%;
+    height: 90%;
     border-radius: 15px;
+    grid-area: img;
+    align-self: end;
 }
 
 #modal-title, #modal-author, #modal-exit {
     max-width: 80%;
     margin: 0 auto;
+}
+
+#modal-info {
+    grid-area: info;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    justify-items: center;
 }
 
 #modal-title {
@@ -199,8 +221,10 @@ footer p {
 }
 
 #modal-exit {
-    margin-top: 5%;
     font-size: 16px;
     color: var(--color-light-gray);
     cursor: pointer;
+    grid-area: exit;
+    align-self: end;
+    margin-bottom: 10px;
 }
