@@ -29,9 +29,17 @@ server.get("/about", function(req, res){
 });
 
 server.get("/recipes", function(req, res){
-    return res.render("recipes", { items: recipes, link_style: "recipes"});
+    
+
+
+    return res.render("recipes", { items: recipes, link_style: "recipes" });
 });
 
+server.get("/recipes/:index", function(req, res){
+    const recipeIndex = req.params.index;
+
+    return res.render("recipe-info", { items: recipes[recipeIndex], link_style: "recipes" })
+});
 
 
 server.listen(5000, function(){

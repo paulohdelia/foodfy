@@ -8,7 +8,7 @@
 
     <div class="cards">
         {% for item in items %}
-            <div class="card">
+            <div class="card" id="{{ loop.index0 }}">
                 <img src="{{ item.image }}" alt="{{ item.title }}">
                 <h1>{{ item.title }}</h1>
                 <p>por
@@ -30,5 +30,5 @@
         </div>
     </div>
 
-    <script src="scripts.js"></script>
+    <script src="recipes.js"></script>
 {% endblock %}

@@ -14,15 +14,23 @@
 
     <body>
         <header>
-            <a href="/"><img src="assets/logo.png" alt="Logo do Foodfy" id="logo"></a>
+            
+            <a href="/"><img src="https://raw.githubusercontent.com/Rocketseat/bootcamp-launchbase-desafios-02/master/layouts/assets/logo.png" alt="Logo do Foodfy" id="logo"></a>
             <a href="/about" class='{{"i-am-this-page" if (link_style == "about") else ""}}'>Sobre</a>
-            <a href="/recipes" class='{{"i-am-this-page" if (link_style == "recipes") else ""}}'>Receitas</a>
+            
+            {% if  window.location.href == "/recipes/:index" %}
+
+                <a href="/recipes/:index" class='{{"i-am-this-page" if (link_style == "recipes") else ""}}'>Receitas</a>
+
+            {% else %}
+
+                <a href="/recipes" class='{{"i-am-this-page" if (link_style == "recipes") else ""}}'>Receitas</a>
+
+            {% endif %}
         </header>
 
-        {% block content %}
+        {% block content %}{% endblock %}
 
-        {% endblock %}
-        
         <footer>
             <p>Todos direitos reservados, receitas Foodfy.</p>
         </footer>
