@@ -1,7 +1,7 @@
-const recipes = require('../data');
+const data = require('../data.json');
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
-    return res.render("admin/list", { items: recipes, link_style: "recipes" })
+    return res.render("admin/list", { items: data.recipes, link_style: "recipes" })
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
