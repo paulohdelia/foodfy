@@ -1,4 +1,4 @@
-{% extends "layout.njk" %}
+{% extends "main/layout.njk" %}
 
 {% block head %}
     <title>Home - Foodfy</title>
@@ -19,7 +19,7 @@
 
     <div class="cards">
         {% for item in items %}
-            {% if loop.index0 < 6 %}
+            {% if loop.index0 < 6 %}    
                 <div class="card" id="{{ loop.index0 }}">
                     <img src="{{ item.image }}" alt="{{ item.title }}">
                     <h1>{{ item.title }}</h1>
@@ -28,19 +28,6 @@
                 </div>
             {% endif %}
         {% endfor %}
-    </div>
-
-    <div class="modal-overlay">
-        <div class="modal">
-            <section id="modal-content">
-                <img id="modal-img" src="" alt="">
-                <div id="modal-info">
-                    <h1 id="modal-title"></h1>
-                    <p id="modal-author"></p>
-                </div>
-                <p id="modal-exit">Fechar</p>
-            </section>
-        </div>
     </div>
 
     <script src="recipes.js"></script>

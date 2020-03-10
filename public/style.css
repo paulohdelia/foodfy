@@ -306,3 +306,52 @@ footer p {
     height: 0;
     width: 9999;
 }
+
+/* === ADMIN ===*/
+.admin {
+    margin: 0;
+}
+
+.admin header{
+    text-align: center;
+    background: #111111;
+    left: 0;
+    right: 0;
+    padding: 24px 0 ;
+    margin-bottom: 48px;
+}
+
+.admin .cards {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.admin h1 {
+    font-size: 24px;
+}
+
+.admin header a img {
+    margin-left: 15%;
+}
+
+.admin .card {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.admin .cards h1 {
+    font-size: 18px;
+}
+
+.admin .cards div {
+    margin: 0;
+    margin-left: 15px;
+}
+
+.admin div {
+    margin: 0 15%
+}

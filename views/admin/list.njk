@@ -1,18 +1,22 @@
-{% extends "layout.njk" %}
+{% extends "admin/layout.njk" %}
 
 {% block content %}
-    <h1 id="most-accessed">Mais recentes</h1>
+    <div>
+        <h1 class="admin">Gerenciar receitas</h1>
 
-    <div class="cards">
-        {% for item in items %}
-            {% if loop.index0 < 6 %}
+        <div class="cards">
+            {% for item in items %}
                 <div class="card" id="{{ loop.index0 }}">
-                    <img src="{{ item.image }}" alt="{{ item.title }}">
-                    <h1>{{ item.title }}</h1>
-                    <p>por
-                        {{ item.author }}</p>
+                    <a href="/admin/recipes/{{ loop.index0 }}"><img src="{{ item.image }}" alt="{{ item.title }}"></a>
+                    <div>
+                        <h1>{{ item.title }}</h1>
+                        <p>por
+                            {{ item.author }}</p>
+                        <a href="/admin/recipes/{{ loop.index0 }}">Visualizar</a>
+                    </div>
                 </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+
 {% endblock %}
