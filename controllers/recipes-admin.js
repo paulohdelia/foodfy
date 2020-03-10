@@ -1,5 +1,7 @@
+const recipes = require('../data');
+
 exports.index = function (req, res) { // Mostrar a lista de receitas
-    return res.render("home")
+    return res.render("admin/list", { items: recipes, link_style: "recipes" })
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
