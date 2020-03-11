@@ -398,3 +398,28 @@ button {
     background-color: #7519c1;
 }
 
+/* === FORM === */
+
+.admin .item h2{
+    margin-top: 28px;
+    margin-bottom: 10px;
+}
+
+.admin form h2 {
+    font-weight: bold;
+    font-size: 16px;
+    color: #111111;
+}
+
+.admin form input, .admin form textarea {
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    width: 100%;
+    padding: 12px;
+    margin: 3px 0;
+}
+
+.admin form textarea {
+    resize: none;
+}

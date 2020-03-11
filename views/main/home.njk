@@ -18,13 +18,13 @@
     <h1 id="most-accessed">Mais recentes</h1>
 
     <div class="cards">
-        {% for item in items %}
+        {% for recipe in recipes %}
             {% if loop.index0 < 6 %}    
                 <div class="card" id="{{ loop.index0 }}">
-                    <img src="{{ item.image }}" alt="{{ item.title }}">
-                    <h1>{{ item.title }}</h1>
+                    <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+                    <h1>{{ recipe.title }}</h1>
                     <p>por
-                        {{ item.author }}</p>
+                        {{ recipe.author }}</p>
                 </div>
             {% endif %}
         {% endfor %}

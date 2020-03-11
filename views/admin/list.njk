@@ -10,13 +10,13 @@
         </div>
 
         <div class="cards">
-            {% for item in items %}
+            {% for recipe in recipes %}
                 <div class="card" id="{{ loop.index0 }}">
-                    <a href="/admin/recipes/{{ loop.index0 }}"><img src="{{ item.image }}" alt="{{ item.title }}"></a>
+                    <a href="/admin/recipes/{{ loop.index0 }}"><img src="{{ recipe.image }}" alt="{{ recipe.title }}"></a>
                     <div>
-                        <h1>{{ item.title }}</h1>
+                        <h1>{{ recipe.title }}</h1>
                         <p>por
-                            {{ item.author }}</p>
+                            {{ recipe.author }}</p>
                         <a href="/admin/recipes/{{ loop.index0 }}">Visualizar</a>
                     </div>
                 </div>

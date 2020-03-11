@@ -6,11 +6,14 @@
 
 {% block content %}
     <section>
-        <div class=title-btn>
-            <h1>Criando receita</h1>
-            <span>
-                <button>Salvar receita</button>
-            </span>
-        </div>
+        <form action="">
+            <div class="title-btn">
+                <h1>Criando receita</h1>
+                <span>
+                    <button>Salvar receita</button>
+                </span>
+            </div>
+            {% include 'admin/fields.njk' %}
+        </form>
     </section>
 {% endblock %}

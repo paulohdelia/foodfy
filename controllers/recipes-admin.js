@@ -1,7 +1,7 @@
 const data = require('../data.json');
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
-    return res.render("admin/list", { items: data.recipes, link_style: "recipes" })
+    return res.render("admin/list", { recipes: data.recipes})
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
@@ -10,11 +10,12 @@ exports.create = function (req, res) { // Mostrar formulário de nova receita
 
 exports.show = function (req, res) { // Exibir detalhes de uma receita
     const recipeIndex = req.params.id;
-    return res.render("admin/detail", { items: data.recipes[recipeIndex], recipeIndex, link_style: "recipes" })
+    return res.render("admin/detail", { recipes: data.recipes[recipeIndex], recipeIndex})
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
-    return res.render("admin/edit")
+    const recipeIndex = req.params.id;
+    return res.render("admin/edit", { recipes: data.recipes[recipeIndex]})
 }
 
 exports.post = function (req, res) { // Cadastrar nova receita
