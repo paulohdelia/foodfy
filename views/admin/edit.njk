@@ -7,14 +7,16 @@
 {% block content %}
     <section id="edit-section">
         <h1>Editando receita</h1>
-        <form class="delete-form">
+        <form class="delete-form" method="POST" action="/admin/recipes/?_method=DELETE">
             <button>Deletar</button>
+            <input type="hidden" name="id" value="{{recipeIndex}}">
         </form>
-        <form class="edit-form">
+        <form class="edit-form" method="POST" action="/admin/recipes/?_method=PUT">
             <button>Salvar receita</button>
             <section class="fields">
                 {% include 'admin/fields.njk' %}
             </section>
+            <input type="hidden" name="id" value="{{recipeIndex}}">
         </form>
     </section>
     <div id="end"></div>
