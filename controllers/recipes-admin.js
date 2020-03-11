@@ -9,11 +9,12 @@ exports.create = function (req, res) { // Mostrar formulário de nova receita
 }
 
 exports.show = function (req, res) { // Exibir detalhes de uma receita
-    return res.render("home")
+    const recipeIndex = req.params.id;
+    return res.render("admin/detail", { items: data.recipes[recipeIndex], link_style: "recipes" })
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
-    return res.render("home")
+    return res.render("admin/edit")
 }
 
 exports.post = function (req, res) { // Cadastrar nova receita

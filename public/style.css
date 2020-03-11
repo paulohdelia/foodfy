@@ -343,6 +343,10 @@ footer p {
     margin: 0;
 }
 
+.admin .card.recipe{
+    grid-template-columns: none;    
+}
+
 .admin .cards h1 {
     font-size: 18px;
 }
@@ -352,6 +356,44 @@ footer p {
     margin-left: 15px;
 }
 
-.admin div {
-    margin: 0 15%
+.admin section {
+    margin: 0 15% 64px 15%;
 }
+
+.admin .card.recipe h1{
+    margin-bottom: 0;
+}
+
+.admin ul {
+    list-style: "-   ";
+}
+
+.admin a {
+    font-weight: bold;
+    font-size: 14px;
+    color: #6558C3;
+    text-decoration: none;
+}
+
+.title-btn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 32px;
+}
+.title-btn span {
+    justify-self: right;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #DC4747;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;    
+    margin-left: 10px;
+}
+
+.title-btn span button:last-of-type {
+    background-color: #7519c1;
+}
+

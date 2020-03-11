@@ -1,8 +1,13 @@
 {% extends "admin/layout.njk" %}
 
 {% block content %}
-    <div>
-        <h1 class="admin">Gerenciar receitas</h1>
+    <section>
+        <div class="title-btn">
+            <h1>Gerenciar receitas</h1>
+            <span>
+                <button>Criar receita</button>
+            </span>
+        </div>
 
         <div class="cards">
             {% for item in items %}
@@ -17,6 +22,6 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </section>
 
 {% endblock %}
