@@ -391,6 +391,7 @@ button {
     color: white;
     font-size: 16px;    
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .title-btn span button:last-of-type {

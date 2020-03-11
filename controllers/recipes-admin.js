@@ -5,12 +5,12 @@ exports.index = function (req, res) { // Mostrar a lista de receitas
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
-    return res.render("home")
+    return res.render("admin/create")
 }
 
 exports.show = function (req, res) { // Exibir detalhes de uma receita
     const recipeIndex = req.params.id;
-    return res.render("admin/detail", { items: data.recipes[recipeIndex], link_style: "recipes" })
+    return res.render("admin/detail", { items: data.recipes[recipeIndex], recipeIndex, link_style: "recipes" })
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
