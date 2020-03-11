@@ -5,3 +5,4 @@ for (let card of cards) {
         window.location.href = `/recipes/${card.id}`;
     });
 }
+

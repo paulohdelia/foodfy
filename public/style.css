@@ -375,6 +375,8 @@ footer p {
     text-decoration: none;
 }
 
+/* === TITLE AND BUTTONS CREATE AND EDIT === */
+
 .title-btn {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -386,7 +388,7 @@ footer p {
 
 button {
     padding: 8px 16px;
-    background-color: #DC4747;
+    background-color: #7519c1;
     border-radius: 4px;
     color: white;
     font-size: 16px;    
@@ -394,8 +396,8 @@ button {
     cursor: pointer;
 }
 
-.title-btn span button:last-of-type {
-    background-color: #7519c1;
+.delete-form button {
+    background-color: #DC4747;
 }
 
 /* === FORM === */
@@ -418,8 +420,51 @@ button {
     width: 100%;
     padding: 12px;
     margin: 3px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .admin form textarea {
     resize: none;
+}
+
+#edit-section {
+    display: grid;
+    grid-template-columns: 9fr 2fr 2fr;
+}
+
+.admin section {
+    position: relative;
+}
+
+.admin .fields {
+    margin: 0;
+    position: absolute;
+    left: 0;
+}
+
+#edit-section form{
+    justify-self: right;
+}
+
+.add-btn {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0;
+    color: #6558C3;
+    text-align: right;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.add-btn p:hover {
+    color: #301dc5;
+}
+
+.edit-form #information{
+    margin-bottom: 64px;
+}
+
+.fields {
+    width: 100%;
 }

@@ -10,12 +10,10 @@ for (let button of buttons) {
             button.textContent = 'ESCONDER';
             button.classList.remove('hide');
             hide.classList.remove('hide');
-            
         } else {     
             button.textContent = 'MOSTRAR';
             button.classList.add('hide');
             hide.classList.add('hide');
-
         }
     })
 }

@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <form action="">
-            <div class="title-btn">
-                <h1>Editando receita</h1>
-                <span>
-                    <button>Deletar</button>
-                    <button>Salvar receita</button>
-                </span>
-            </div>
-
-            {% include 'admin/fields.njk' %}
+    <section id="edit-section">
+        <h1>Editando receita</h1>
+        <form class="delete-form">
+            <button>Deletar</button>
+        </form>
+        <form class="edit-form">
+            <button>Salvar receita</button>
+            <section class="fields">
+                {% include 'admin/fields.njk' %}
+            </section>
         </form>
     </section>
+    <div id="end"></div>
+    <script src="/admin.js"></script>
+
 {% endblock %}
