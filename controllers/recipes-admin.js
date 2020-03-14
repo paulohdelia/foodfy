@@ -43,9 +43,21 @@ exports.put = function (req, res) { // Editar uma receita
 
         return res.redirect(`/admin/recipes/${req.body.id}`)
     })
-     
+
 }
 
 exports.delete = function (req, res) { // Deletar uma receita
-    return res.render("home")
+    
+    if (data.recipes.length == 1) {
+         data.recipes = []
+    } else {
+        data.recipes.splice(req.body.id, 1)
+    }
+    
+
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), function(err) {
+        if(err) return res.send('Write error!')
+
+        return res.redirect(`/admin/recipes`)
+    })
 }
