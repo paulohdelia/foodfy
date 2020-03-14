@@ -20,21 +20,26 @@ exports.edit = function (req, res) { // Mostrar formulários de edição de rece
 }
 
 exports.post = function (req, res) { // Cadastrar nova receita
-    return res.render("home")
+    const recipe = {
+        ...req.body
+    }
+
+    data.recipes.push(recipe);
+
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), function(err) {
+        if(err) return res.send('Write error!')
+
+        return res.redirect(`/admin/recipes/${data.recipes.length-1}`)
+    })
 }
 
 exports.put = function (req, res) { // Editar uma receita
-    
-    const { image, title, author, ingredients, preparation, information } = req.body;
-    
+        
     const recipe = {
-        image,
-        title,
-        author,
-        ingredients,
-        preparation,
-        information
+        ...req.body
     }
+
+    delete recipe.id
 
     data.recipes[req.body.id] = recipe;
 
@@ -43,7 +48,6 @@ exports.put = function (req, res) { // Editar uma receita
 
         return res.redirect(`/admin/recipes/${req.body.id}`)
     })
-
 }
 
 exports.delete = function (req, res) { // Deletar uma receita
