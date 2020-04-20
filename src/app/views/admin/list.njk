@@ -11,13 +11,13 @@
 
         <div class="cards">
             {% for recipe in recipes %}
-                <div class="card" id="{{ loop.index0 }}">
-                    <a href="/admin/recipes/{{ loop.index0 }}"><img src="{{ recipe.image }}" alt="{{ recipe.title }}"></a>
+                <div class="card" id="{{ recipe.id }}">
+                    <a href="/admin/recipes/{{ recipe.id }}"><img src="{{ recipe.image }}" alt="{{ recipe.title }}"></a>
                     <div>
                         <h1>{{ recipe.title }}</h1>
                         <p>por
                             {{ recipe.author }}</p>
-                        <a href="/admin/recipes/{{ loop.index0 }}">Visualizar</a>
+                        <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
                     </div>
                 </div>
             {% endfor %}

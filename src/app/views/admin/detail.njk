@@ -7,17 +7,17 @@
 {% block content %}
     <section>
         <div class=title-btn>
-            <h1>Receita: {{ recipes.title }} </h1>
+            <h1>Receita: {{ recipe.title }} </h1>
             <span>
-                <a href="/admin/recipes/{{ recipeIndex }}/edit"><button>Editar receita</button></a>
+                <a href="/admin/recipes/{{ recipe.id }}/edit"><button>Editar receita</button></a>
             </span>
         </div>
 
         <div class="card recipe">
-            <img src="{{ recipes.image }}" alt="{{ recipes.title }}">
-            <h1>{{ recipes.title }}</h1>
+            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+            <h1>{{ recipe.title }}</h1>
             <p>por
-                {{ recipes.author }}</p>
+                {{ recipe.author }}</p>
         </div>
 
         <div class="recipe_content">
@@ -25,7 +25,7 @@
             <h1>Ingredientes</h1>
 
             <ul class="ingredient_">
-                {% for ingredient in recipes.ingredients %}
+                {% for ingredient in recipe.ingredients %}
                     <li>
                         {{ ingredient }}
                     </li>
@@ -35,7 +35,7 @@
             <h1>Modo de preparo</h1>
 
             <ul class="preparation_">
-                {% for step in recipes.preparation %}
+                {% for step in recipe.preparation %}
                     <li>
                         {{ step }}
                     </li>
@@ -45,7 +45,7 @@
             <h1>Informações adicionais</h1>
 
             <p class="information_">
-                {{ recipes.information }}
+                {{ recipe.information }}
             </p>
         </div>
     </section>

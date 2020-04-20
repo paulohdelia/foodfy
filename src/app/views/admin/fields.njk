@@ -1,23 +1,23 @@
 <div class="item">
     <h2>Imagem da receita</h2>
-    <input type="url" name="image" value="{{recipes.image}}">
+    <input type="url" name="image" value="{{recipe.image}}">
 </div>
 
 <div class="item">
     <h2>Título da receita</h2>
-    <input type="text" name="title" value="{{recipes.title}}">
+    <input type="text" name="title" value="{{recipe.title}}">
 </div>
 
 <div class="item">
     <h2>Autor</h2>
-    <input type="text" name="author" value="{{recipes.author}}">
+    <input type="text" name="author" value="{{recipe.author}}">
 </div>
 
 <div class="item" id="ingredients">
     <h2>Ingredientes</h2>
 
-    {% if recipes.ingredients.length > 0 %}
-        {% for ingredient in recipes.ingredients %}
+    {% if recipe.ingredients.length > 0 %}
+        {% for ingredient in recipe.ingredients %}
             <div class="ingredient">
                 <input type="text" name="ingredients[]" value="{{ingredient}}">
             </div>
@@ -33,8 +33,8 @@
 
 <div class="item" id="preparation">
     <h2>Modo de preparo</h2>
-    {% if recipes.preparation.length > 0 %}
-        {% for step in recipes.preparation %}
+    {% if recipe.preparation.length > 0 %}
+        {% for step in recipe.preparation %}
             <div class="step">
                 <input type="text" name="preparation[]" value="{{step}}">
             </div>
@@ -50,5 +50,5 @@
 
 <div class="item" id="information">
     <h2>Informações adicionais</h2>
-    <textarea name="information" cols="30" rows="10">{{recipes.information}}</textarea>
+    <textarea name="information" cols="30" rows="10">{{recipe.information}}</textarea>
 </div>

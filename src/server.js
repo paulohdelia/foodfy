@@ -13,7 +13,7 @@ server.use(routes)
 
 server.set("view engine", "njk");
 
-nunjucks.configure("src/views", {
+nunjucks.configure("src/app/views", {
     express: server, 
     autoescape: false,
     noCache: true
