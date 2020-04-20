@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const recipes = require('./app/controllers/recipes')
-const admin = require('./app/controllers/recipes-admin')
+const admin = require('./app/controllers/admin-recipes')
 
 /* === RECIPES === */
 router.get("/", recipes.index);
