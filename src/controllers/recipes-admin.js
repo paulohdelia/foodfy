@@ -1,4 +1,4 @@
-const data = require('../data.json');
+const data = require('../../data.json');
 const fs = require('fs')
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
