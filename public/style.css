@@ -132,8 +132,6 @@ header a:hover {
     margin-bottom: 10px;
 }
 
-
-
 footer {
     text-align: center;
     background: #EEEEEE;
@@ -373,6 +371,7 @@ footer p {
     font-size: 14px;
     color: #6558C3;
     text-decoration: none;
+    justify-self: center;
 }
 
 /* === TITLE AND BUTTONS CREATE AND EDIT === */
