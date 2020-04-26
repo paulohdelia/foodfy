@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const recipes = require('./app/controllers/recipes')
-const admin = require('./app/controllers/admin-recipes')
+const adminRecipes = require('./app/controllers/admin-recipes')
+const adminChefs = require('./app/controllers/admin-chefs')
 
 /* === RECIPES === */
 router.get("/", recipes.index);
@@ -10,13 +11,25 @@ router.get("/recipes", recipes.list);
 router.get("/recipes/:index", recipes.recipe);
 
 /* === ADMIN ===*/
-router.get("/admin/recipes", admin.index)
-router.get("/admin/recipes/create", admin.create)
-router.get("/admin/recipes/:id", admin.show)
-router.get("/admin/recipes/:id/edit", admin.edit)
 
-router.post("/admin/recipes", admin.post)
-router.put("/admin/recipes", admin.put)
-router.delete("/admin/recipes", admin.delete)
+/* RECIPES */
+router.get("/admin/recipes", adminRecipes.index)
+router.get("/admin/recipes/create", adminRecipes.create)
+router.get("/admin/recipes/:id", adminRecipes.show)
+router.get("/admin/recipes/:id/edit", adminRecipes.edit)
+
+router.post("/admin/recipes", adminRecipes.post)
+router.put("/admin/recipes", adminRecipes.put)
+router.delete("/admin/recipes", adminRecipes.delete)
+
+/* CHEFS */
+router.get("/admin/chefs", adminChefs.index)
+router.get("/admin/chefs/create", adminChefs.create)
+router.get("/admin/chefs/:id", adminChefs.show)
+router.get("/admin/chefs/:id/edit", adminChefs.edit)
+
+router.post("/admin/chefs", adminChefs.post)
+router.put("/admin/chefs", adminChefs.put)
+router.delete("/admin/chefs", adminChefs.delete)
 
 module.exports = router;

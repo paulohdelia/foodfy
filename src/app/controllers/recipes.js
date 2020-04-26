@@ -24,6 +24,7 @@ exports.list = function(req, res){
 }   
 
 exports.recipe = function(req, res){
-    const recipeIndex = req.params.index;
-    return res.render("main/recipe", { recipes: data.recipes[recipeIndex], link_style: "recipes" })
+    Recipes.find(req.params.index, function(recipes){
+        return res.render("main/recipe", { recipes , link_style: "recipes" })
+    })
 }

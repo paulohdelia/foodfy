@@ -1,42 +1,42 @@
-const Admin = require('../models/Admin-recipes')
+const Admin = require('../models/Admin-chefs')
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
-    Admin.all(function(recipes) {
-        return res.render("admin/recipe/list", { recipes });
+    Admin.all(function(chefs) {
+        return res.render("admin/chef/list", { chefs });
     })
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
-    return res.render("admin/recipe/create")
+    return res.render("admin/chef/create")
 }
 
 
 exports.show = function (req, res) { // Exibir detalhes de uma receita
-    Admin.find(req.params.id, function(recipe){
-        return res.render("admin/recipe/detail", { recipe })
+    Admin.find(req.params.id, function(chef){
+        return res.render("admin/chef/detail", { chef })
     })
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
-    Admin.find(req.params.id, function(recipe){
-        return res.render("admin/recipe/edit", { recipe })
+    Admin.find(req.params.id, function(chef){
+        return res.render("admin/chef/edit", { chef })
     })
 }
 
 exports.post = function (req, res) { // Cadastrar nova receita
-    Admin.create(req.body, function (recipe) {
-        return res.redirect(`/admin/recipes/${recipe.id}`)
+    Admin.create(req.body, function (chef) {
+        return res.redirect(`/admin/chefs/${chef.id}`)
     })
 }
 
 exports.put = function (req, res) { // Editar uma receita  
     Admin.update(req.body, function(id) {
-        return res.redirect(`/admin/recipes/${id}`);
+        return res.redirect(`/admin/chefs/${id}`);
     })
 }
 
 exports.delete = function (req, res) { // Deletar uma receita
     Admin.delete(req.body.id ,function() {
-        return res.redirect(`/admin/recipes`)
+        return res.redirect(`/admin/chefs`)
     })
 }

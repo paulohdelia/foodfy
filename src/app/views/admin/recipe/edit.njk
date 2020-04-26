@@ -14,7 +14,7 @@
         <form class="edit-form" method="POST" action="/admin/recipes/?_method=PUT">
             <button>Salvar receita</button>
             <section class="fields">
-                {% include 'admin/fields.njk' %}
+                {% include 'admin/recipe/fields.njk' %}
             </section>
             <input type="hidden" name="id" value="{{recipe.id}}">
         </form>

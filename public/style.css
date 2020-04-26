@@ -46,7 +46,6 @@ header {
 
 #logo {
     float: left;
-    margin-right: 10%;
 }
 
 header a {
@@ -311,7 +310,7 @@ footer p {
 }
 
 .admin header{
-    text-align: center;
+    text-align: left;
     background: #111111;
     left: 0;
     right: 0;
@@ -322,7 +321,7 @@ footer p {
 .admin .cards {
     margin: 20px 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
 
@@ -372,6 +371,10 @@ footer p {
     color: #6558C3;
     text-decoration: none;
     justify-self: center;
+}
+
+.admin header a {
+    color: #999999;
 }
 
 /* === TITLE AND BUTTONS CREATE AND EDIT === */
@@ -466,4 +469,44 @@ button {
 
 .fields {
     width: 100%;
+}
+
+/* === CHEF === */
+
+.admin .card.chef {
+    grid-template-columns: none;
+}
+
+.card.chef {
+    display: grid;
+    justify-items: center;
+}
+
+.admin .card.chef img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    cursor: default;
+}
+
+.card.chef h1 {
+    margin-top: 40px;
+    font-size: 200%;
+}
+.card.chef p  {
+    font-size: 150%;
+}
+
+.admin .cards.chefs {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.admin .cards.chefs .card {
+    grid-template-columns: 1fr 2fr;
+}
+
+.admin .cards.chefs .card img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
 }
