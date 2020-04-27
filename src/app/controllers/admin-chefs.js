@@ -1,7 +1,7 @@
 const Admin = require('../models/Admin-chefs')
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
-    Admin.all(function(chefs) {
+    Admin.all(function (chefs) {
         return res.render("admin/chef/list", { chefs });
     })
 }
@@ -12,13 +12,15 @@ exports.create = function (req, res) { // Mostrar formulário de nova receita
 
 
 exports.show = function (req, res) { // Exibir detalhes de uma receita
-    Admin.find(req.params.id, function(chef){
-        return res.render("admin/chef/detail", { chef })
-    })
+    const id = req.params.id;
+
+    Admin.find(id, function (chef) {
+        return res.render("admin/chef/detail", { chef: chef[0], recipes: chef })
+    });
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
-    Admin.find(req.params.id, function(chef){
+    Admin.find(req.params.id, function (chef) {
         return res.render("admin/chef/edit", { chef })
     })
 }
@@ -30,13 +32,13 @@ exports.post = function (req, res) { // Cadastrar nova receita
 }
 
 exports.put = function (req, res) { // Editar uma receita  
-    Admin.update(req.body, function(id) {
+    Admin.update(req.body, function (id) {
         return res.redirect(`/admin/chefs/${id}`);
     })
 }
 
 exports.delete = function (req, res) { // Deletar uma receita
-    Admin.delete(req.body.id ,function() {
+    Admin.delete(req.body.id, function () {
         return res.redirect(`/admin/chefs`)
     })
 }

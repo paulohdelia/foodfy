@@ -33,10 +33,24 @@ module.exports = {
         })
     },
 
+    // find(id,callback){
+    //     db.query('SELECT * from chefs WHERE id = $1', [id], function(err, results){
+    //         if (err) throw `Database Error! ${err}`;
+    //         callback(results.rows[0])
+    //     })
+    // },
+
     find(id, callback) {
-        db.query('SELECT * FROM chefs WHERE id = $1', [id], function(err, results) {
+        const query = `
+            SELECT recipes.chef_id, recipes.id AS recipe_id, recipes.title, recipes.image , chefs.*
+                FROM chefs
+                LEFT JOIN recipes ON recipes.chef_id = chefs.id
+            WHERE chefs.id = $1
+        `
+
+        db.query(query, [id], function(err, results) {
             if (err) throw `Database Error! ${err}`;
-            callback(results.rows[0])
+            callback(results.rows)
         });
     },
 

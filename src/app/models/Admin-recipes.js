@@ -13,19 +13,21 @@ module.exports = {
     create(data, callback) {
         const query = `
             INSERT INTO recipes (
-                image,
+                chef_id,
                 title,
+                image,
                 ingredients,
                 preparation,
                 information,
                 created_at
-            ) VALUES ($1, $2, $3, $4, $5, $6)
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING id
         `
 
         const values = [
-            data.image,
+            data.chef,
             data.title,
+            data.image,
             data.ingredients,
             data.preparation,
             data.information,
