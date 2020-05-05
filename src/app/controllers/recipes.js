@@ -18,8 +18,8 @@ exports.about = function(req, res){
 
 exports.list = function(req, res){
     if (req.query.filter) {
-        Recipes.findBy(req.query.filter, function(recipes) {
-            return res.render("main/recipes", { recipes, link_style: "recipes" });
+        Recipes.findBy(req.query.filter, function(recipes, filter) {
+            return res.render("main/recipes", { recipes, link_style: "recipes", filter });
         })
     } else {
         Recipes.all(function(recipes){
