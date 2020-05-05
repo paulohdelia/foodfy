@@ -53,8 +53,29 @@ html, body {
     padding-bottom: 128px;
 }
 
-header {
+#main {
     padding: 30px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#main div {
+    align-self: center;
+}
+
+#main form {
+    justify-self: right;
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+#main form input {
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
 #logo {

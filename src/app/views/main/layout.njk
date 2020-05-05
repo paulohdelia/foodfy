@@ -15,12 +15,20 @@
     <body>
         <div id="wrapper">
             <div class="body-content">
-                <header>
-                    <a href="/"><img src="https://raw.githubusercontent.com/Rocketseat/bootcamp-launchbase-desafios-02/master/layouts/assets/logo.png" alt="Logo do Foodfy" id="logo"></a>
-                    <a href="/about" class='{{"i-am-this-page" if (link_style == "about") else ""}}'>Sobre</a>
-                    <a href="/recipes" class='{{"i-am-this-page" if (link_style == "recipes") else ""}}'>Receitas</a>
-                    <a href="/chefs" class='{{"i-am-this-page" if (link_style == "chefs") else ""}}'>Chefs</a>
-
+                <header id="main">
+                    <div>
+                        <a href="/"><img src="https://raw.githubusercontent.com/Rocketseat/bootcamp-launchbase-desafios-02/master/layouts/assets/logo.png" alt="Logo do Foodfy" id="logo"></a>
+                        <a href="/about" class='{{"i-am-this-page" if (link_style == "about") else ""}}'>Sobre</a>
+                        <a href="/recipes" class='{{"i-am-this-page" if (link_style == "recipes") else ""}}'>Receitas</a>
+                        <a href="/chefs" class='{{"i-am-this-page" if (link_style == "chefs") else ""}}'>Chefs</a>
+                    </div>
+                    
+                    {% if link_style != "chefs" %}
+                        <form class="item" action="/recipes" method="GET">
+                            <input type="text" name="filter" placeholder="Buscar receita" value="{{filter}}">
+                            <button type="submit">Filtrar</button>
+                        </form>
+                    {% endif %}
                 </header>
 
                 {% block content %}{% endblock %}

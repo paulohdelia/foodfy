@@ -27,5 +27,20 @@ module.exports = {
 
             callback(results.rows[0]);
         });
+    },
+
+    findBy(filter, callback) {
+        const query = `
+        SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
+        FROM recipes 
+        LEFT JOIN chefs ON chefs.id = recipes.chef_id
+        WHERE recipes.title ILIKE '%${filter}%'
+        ORDER BY id DESC
+        `
+        db.query(query, function(err, results) {
+            if(err) throw `Database Error! ${err}`
+
+            callback(results.rows);
+        })
     }
 }
