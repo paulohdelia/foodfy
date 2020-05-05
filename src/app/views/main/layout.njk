@@ -25,7 +25,12 @@
                     
                     {% if link_style != "chefs" %}
                         <form class="item" action="/recipes" method="GET">
-                            <input type="text" name="filter" placeholder="Buscar receita" value="{{filter}}">
+                            <input type="text" name="filterRecipes" placeholder="Buscar receita" value="{{filter}}">
+                            <button type="submit">Filtrar</button>
+                        </form>
+                    {% else %}
+                        <form class="item" action="/chefs" method="GET">
+                            <input type="text" name="filterChefs" placeholder="Buscar chef" value="{{filter}}">
                             <button type="submit">Filtrar</button>
                         </form>
                     {% endif %}

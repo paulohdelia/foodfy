@@ -2,9 +2,17 @@ const Chefs = require('../models/Chefs');
 
 module.exports = {
     list(req, res) {
-        Chefs.all(function (chefs) {
-            return res.render("main/chefs", { chefs, link_style: "chefs" })
-        });
+        if (req.query.filterChefs) {
+            Chefs.findBy(req.query.filterChefs, function(chefs, filter) {
+                console.log(filter)
+                return res.render("main/chefs", { chefs, link_style: "chefs", filter })
+            })
+        } else {
+            Chefs.all(function (chefs) {
+                return res.render("main/chefs", { chefs, link_style: "chefs" })
+            });
+        }
+
     },
     show(req, res) {
         const id = req.params.index;

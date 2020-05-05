@@ -17,8 +17,8 @@ exports.about = function(req, res){
 }
 
 exports.list = function(req, res){
-    if (req.query.filter) {
-        Recipes.findBy(req.query.filter, function(recipes, filter) {
+    if (req.query.filterRecipes) {
+        Recipes.findBy(req.query.filterRecipes, function(recipes, filter) {
             return res.render("main/recipes", { recipes, link_style: "recipes", filter });
         })
     } else {
