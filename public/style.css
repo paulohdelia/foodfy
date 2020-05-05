@@ -127,7 +127,8 @@ header a:hover {
 }
 
 .card img{
-    max-width: 100%;
+    width: 100%;
+    object-fit: cover;
     height: 18vh;
     border-radius: 15px;
     cursor: pointer;
@@ -334,13 +335,6 @@ footer p {
     margin-bottom: 48px;
 }
 
-.admin .cards {
-    margin: 20px 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
 .admin h1 {
     font-size: 24px;
 }
@@ -489,11 +483,30 @@ button {
 
 /* === CHEF === */
 
-.card.chef {
-    grid-template-columns: none;
+.cards.chefs {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.cards.chefs {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.cards.chefs .card {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.cards.chefs .card img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
 }
 
 .card.chef {
+    grid-template-columns: none;
     display: grid;
     justify-items: center;
 }
@@ -513,16 +526,3 @@ button {
     font-size: 150%;
 }
 
-.cards.chefs {
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.cards.chefs .card {
-    grid-template-columns: 1fr 2fr;
-}
-
-.cards.chefs .card img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-}

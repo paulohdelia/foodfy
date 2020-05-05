@@ -2,11 +2,10 @@
 
 {% block content %}
     <section>
-
         <div class="cards chefs">
             {% for chef in chefs %}
                 <div class="card" id="{{ chef.id }}">
-                    <a href="/admin/chefs/{{ chef.id }}"><img src="{{ chef.avatar_url }}" alt="{{ chef.name }}"></a>
+                    <a href="/chefs/{{ chef.id }}"><img src="{{ chef.avatar_url }}" alt="{{ chef.name }}"></a>
                     <div>
                         <h1>{{ chef.name }}</h1>
                         <p>

@@ -14,5 +14,19 @@ module.exports = {
 
             callback(results.rows)
         })
-    }
+    },
+
+    find(id, callback) {
+        const query = `
+            SELECT recipes.chef_id, recipes.id AS recipe_id, recipes.title, recipes.image , chefs.*
+                FROM chefs
+                LEFT JOIN recipes ON recipes.chef_id = chefs.id
+            WHERE chefs.id = $1
+        `
+
+        db.query(query, [id], function (err, results) {
+            if (err) throw `Database Error! ${err}`;
+            callback(results.rows)
+        });
+    },
 }

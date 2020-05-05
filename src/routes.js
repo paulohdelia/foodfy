@@ -15,7 +15,7 @@ router.get("/recipes/:index", recipes.recipe);
 
 /* CHEFS */
 router.get("/chefs", chefs.list);
-router.get("/chefs/:index", chefs.detail);
+router.get("/chefs/:index", chefs.show);
 
 /* === ADMIN ===*/
 
