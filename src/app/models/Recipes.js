@@ -2,7 +2,13 @@ const db = require('../../config/db');
 
 module.exports = {
     all(callback) {
-        db.query('SELECT * FROM recipes ORDER BY id desc', function(err, results){
+        const query = `
+            SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
+            FROM recipes 
+            LEFT JOIN chefs ON chefs.id = recipes.chef_id
+            ORDER BY id DESC
+        `
+        db.query(query, function(err, results){
             if(err) throw `Database Error! ${err}`
 
             callback(results.rows);
@@ -10,7 +16,13 @@ module.exports = {
     },
 
     find(id, callback) {
-        db.query('SELECT * FROM recipes WHERE id = $1', [id], function(err, results){
+        const query = `
+            SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
+            FROM recipes 
+            LEFT JOIN chefs ON chefs.id = recipes.chef_id 
+            WHERE recipes.id = $1
+        `
+        db.query(query, [id], function(err, results){
             if(err) throw `Database Error! ${err}`
 
             callback(results.rows[0]);

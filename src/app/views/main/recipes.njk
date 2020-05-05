@@ -11,8 +11,7 @@
             <div class="card" id="{{ recipe.id }}">
                 <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
                 <h1>{{ recipe.title }}</h1>
-                <p>por
-                    {{ recipe.author }}</p>
+                <a href="/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
             </div>
         {% endfor %}
     </div>

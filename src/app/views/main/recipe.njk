@@ -8,8 +8,7 @@
     <div class="card recipe">
         <img src="{{ recipes.image }}" alt="{{ recipes.title }}">
         <h1>{{ recipes.title }}</h1>
-        <p>por
-            {{ recipes.author }}</p>
+        <a href="/chefs/{{recipes.chef_id}}"><p>por {{ recipes.chef }}</p></a>
     </div>
 
     <div class="recipe_content">
