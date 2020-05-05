@@ -15,8 +15,7 @@
                     <a href="/admin/recipes/{{ recipe.id }}"><img src="{{ recipe.image }}" alt="{{ recipe.title }}"></a>
                     <div>
                         <h1>{{ recipe.title }}</h1>
-                        <p>por
-                            {{ recipe.author }}</p>
+                        <a href="/admin/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
                         <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
                     </div>
                 </div>

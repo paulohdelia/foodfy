@@ -1,6 +1,10 @@
 <div class="item">
     <h2>Chef</h2>
-    <input type="text" name="chef" value="{{recipe.chef_id}}">
+    <select name="chef_id">
+        {% for chef in chefs %}
+            <option value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected {% endif %}>{{chef.name}}</option>
+        {% endfor %}
+    </select>
 </div>
 
 <div class="item">

@@ -7,7 +7,9 @@ exports.index = function (req, res) { // Mostrar a lista de receitas
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita
-    return res.render("admin/recipe/create")
+    Admin.listChefs(function(chefs) {
+        return res.render("admin/recipe/create", {chefs})
+    })
 }
 
 
@@ -19,8 +21,10 @@ exports.show = function (req, res) { // Exibir detalhes de uma receita
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
     Admin.find(req.params.id, function(recipe){
-        return res.render("admin/recipe/edit", { recipe })
-    })
+        Admin.listChefs(function(chefs) {
+            return res.render("admin/recipe/edit", { recipe, chefs });
+        });
+    });
 }
 
 exports.post = function (req, res) { // Cadastrar nova receita

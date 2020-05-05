@@ -129,6 +129,7 @@ header a:hover {
     font-size: 14px;
     color: var(--color-gray);
     margin-bottom: 10px;
+    font-weight: normal;
 }
 
 footer {
@@ -415,7 +416,7 @@ button {
     color: #111111;
 }
 
-.admin form input, .admin form textarea {
+.admin form input, .admin form textarea, .admin form select {
     background: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 4px;

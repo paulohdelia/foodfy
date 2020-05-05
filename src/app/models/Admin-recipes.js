@@ -3,7 +3,13 @@ const { date } = require('../../lib/utils');
 
 module.exports = {
     all(callback) {
-        db.query('SELECT * FROM recipes ORDER BY id DESC', function(err, results) {
+        const query = `
+            SELECT recipes.id, recipes.image, recipes.title , chefs.name as chef, chefs.id as chef_id
+            from recipes 
+            left join chefs on chefs.id = recipes.chef_id
+            ORDER BY recipes.id desc
+        `
+        db.query(query, function(err, results) {
             if (err) throw `Database Error! ${err}`;
 
             callback(results.rows)
@@ -25,7 +31,7 @@ module.exports = {
         `
 
         const values = [
-            data.chef,
+            data.chef_id,
             data.title,
             data.image,
             data.ingredients,
@@ -42,7 +48,13 @@ module.exports = {
     },
 
     find(id, callback) {
-        db.query('SELECT * FROM recipes WHERE id = $1', [id], function(err, results) {
+        query = `
+            SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
+                FROM recipes 
+                LEFT JOIN chefs ON chefs.id = recipes.chef_id 
+                WHERE recipes.id = $1
+        `
+        db.query(query, [id], function(err, results) {
             if (err) throw `Database Error! ${err}`;
             callback(results.rows[0])
         });
@@ -51,15 +63,17 @@ module.exports = {
     update(data, callback) {
         const query = `
             UPDATE recipes SET
-                image=($1),
-                title=($2),
-                ingredients=($3),
-                preparation=($4),
-                information=($5)
-            WHERE id = $6
+                chef_id=($1),
+                image=($2),
+                title=($3),
+                ingredients=($4),
+                preparation=($5),
+                information=($6)
+            WHERE id = $7
         `
 
         const values = [
+            data.chef_id,
             data.image,
             data.title,
             data.ingredients,
@@ -80,5 +94,12 @@ module.exports = {
             if (err) throw `Database Error! ${err}`;
             callback()
         });
+    },
+
+    listChefs(callback) {
+        db.query("SELECT id, name FROM chefs ORDER BY name ASC", function(err, results) {
+            if(err) throw `Database Error! ${err}`;
+            callback(results.rows);
+        })
     }
 }

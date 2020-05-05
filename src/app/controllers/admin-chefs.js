@@ -21,7 +21,7 @@ exports.show = function (req, res) { // Exibir detalhes de uma receita
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita
     Admin.find(req.params.id, function (chef) {
-        return res.render("admin/chef/edit", { chef })
+        return res.render("admin/chef/edit", { chef: chef[0] })
     })
 }
 
