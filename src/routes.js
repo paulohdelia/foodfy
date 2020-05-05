@@ -1,14 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const recipes = require('./app/controllers/recipes')
+const chefs = require('./app/controllers/chefs')
 const adminRecipes = require('./app/controllers/admin-recipes')
 const adminChefs = require('./app/controllers/admin-chefs')
 
-/* === RECIPES === */
+/* === MAIN === */
+
+/* RECIPES */
 router.get("/", recipes.index);
 router.get("/about", recipes.about);
 router.get("/recipes", recipes.list);
 router.get("/recipes/:index", recipes.recipe);
+
+/* CHEFS */
+router.get("/chefs", chefs.list);
+router.get("/chefs/:index", chefs.detail);
 
 /* === ADMIN ===*/
 

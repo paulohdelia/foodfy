@@ -1,0 +1,21 @@
+{% extends "main/layout.njk" %}
+
+{% block content %}
+    <section>
+
+        <div class="cards chefs">
+            {% for chef in chefs %}
+                <div class="card" id="{{ chef.id }}">
+                    <a href="/admin/chefs/{{ chef.id }}"><img src="{{ chef.avatar_url }}" alt="{{ chef.name }}"></a>
+                    <div>
+                        <h1>{{ chef.name }}</h1>
+                        <p>
+                            {{chef.total_recipes if chef.total_recipes else 0}} {{"receitas" if chef.total_recipes != 1  else "receita"}}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endblock %}
