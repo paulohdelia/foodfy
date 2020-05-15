@@ -4,7 +4,7 @@ const { date } = require('../../lib/utils');
 module.exports = {
     all(callback) {
         const query = `
-            SELECT recipes.id, recipes.image, recipes.title , chefs.name as chef, chefs.id as chef_id
+            SELECT recipes.id, recipes.title , chefs.name as chef, chefs.id as chef_id
             from recipes 
             left join chefs on chefs.id = recipes.chef_id
             ORDER BY recipes.id desc

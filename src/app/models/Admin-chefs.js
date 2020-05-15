@@ -49,7 +49,7 @@ module.exports = {
 
     find(id, callback) {
         const query = `
-            SELECT recipes.chef_id, recipes.id AS recipe_id, recipes.title, recipes.image , chefs.*
+            SELECT recipes.chef_id, recipes.id AS recipe_id, recipes.title , chefs.*
                 FROM chefs
                 LEFT JOIN recipes ON recipes.chef_id = chefs.id
             WHERE chefs.id = $1
