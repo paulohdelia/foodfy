@@ -14,7 +14,7 @@
         </div>
 
         <div class="card recipe">
-            <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
+            <img src="{{ files[0].src }}" alt="{{ files[0].name }}">
             <h1>{{ recipe.title }}</h1>
             <a href="/admin/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
         </div>

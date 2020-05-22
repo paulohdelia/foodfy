@@ -4,12 +4,11 @@ module.exports = {
     list(req, res) {
         if (req.query.filterChefs) {
             Chefs.findBy(req.query.filterChefs, function(chefs, filter) {
-                console.log(filter)
-                return res.render("main/chefs", { chefs, link_style: "chefs", filter })
+                return res.render("main/chefs", { chefs, link_style: "chefs", filter });
             })
         } else {
             Chefs.all(function (chefs) {
-                return res.render("main/chefs", { chefs, link_style: "chefs" })
+                return res.render("main/chefs", { chefs, link_style: "chefs" });
             });
         }
 

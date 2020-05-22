@@ -2,62 +2,49 @@ const db = require('../../config/db');
 const { date } = require('../../lib/utils');
 
 module.exports = {
-    all(callback) {
+    all() {
         const query = `
             SELECT recipes.id, recipes.title , chefs.name as chef, chefs.id as chef_id
-            from recipes 
-            left join chefs on chefs.id = recipes.chef_id
-            ORDER BY recipes.id desc
+            FROM recipes 
+            LEFT JOIN chefs ON chefs.id = recipes.chef_id
+            ORDER BY recipes.id DESC
         `
-        db.query(query, function(err, results) {
-            if (err) throw `Database Error! ${err}`;
-
-            callback(results.rows)
-        })
+        return db.query(query);
     },
 
-    create(data, callback) {
+    create(data) {
         const query = `
             INSERT INTO recipes (
                 chef_id,
                 title,
-                image,
                 ingredients,
                 preparation,
                 information,
                 created_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            ) VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING id
         `
 
         const values = [
             data.chef_id,
             data.title,
-            data.image,
             data.ingredients,
             data.preparation,
             data.information,
             date(Date.now()).iso
         ]
 
-        db.query(query, values, function(err, results) {
-            if (err) throw `Database Error! ${err}`;
-            
-            callback(results.rows[0])
-        })
+        return db.query(query, values);
     },
 
-    find(id, callback) {
+    find(id) {
         query = `
             SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
                 FROM recipes 
                 LEFT JOIN chefs ON chefs.id = recipes.chef_id 
                 WHERE recipes.id = $1
         `
-        db.query(query, [id], function(err, results) {
-            if (err) throw `Database Error! ${err}`;
-            callback(results.rows[0])
-        });
+        return db.query(query, [id]);
     },
 
     update(data, callback) {
@@ -82,7 +69,7 @@ module.exports = {
             data.id
         ]
 
-        db.query(query, values, function(err, results){
+        return db.query(query, values, function(err, results){
             if (err) throw `Database Error! ${err}`;
 
             callback(data.id)
@@ -96,10 +83,7 @@ module.exports = {
         });
     },
 
-    listChefs(callback) {
-        db.query("SELECT id, name FROM chefs ORDER BY name ASC", function(err, results) {
-            if(err) throw `Database Error! ${err}`;
-            callback(results.rows);
-        })
+    listChefs() {
+        return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
     }
 }
