@@ -19,13 +19,14 @@
 
     <div class="cards">
         {% for recipe in recipes %}
-            {% if loop.index0 < 6 %}    
-                <div class="card" id="{{ recipe.id }}">
-                    <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
-                    <h1>{{ recipe.title }}</h1>
-                    <a href="/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
-                </div>
-            {% endif %}
+            <div class="card" id="{{ recipe.id }}">
+                <img src="{{ recipe.src }}" alt="{{ recipe.title }}">
+                <h1>{{ recipe.title }}</h1>
+                <a href="/chefs/{{recipe.chef_id}}">
+                    <p>por
+                        {{ recipe.chef }}</p>
+                </a>
+            </div>
         {% endfor %}
     </div>
 

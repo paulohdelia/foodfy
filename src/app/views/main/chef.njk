@@ -8,9 +8,9 @@
     <section>
 
         <div class="card chef">
-            <img src="{{ chef.avatar_url }}" alt="{{ chef.name }}">
+            <img src="{{ chef.image }}" alt="{{ chef.name }}">
             <h1>{{ chef.name }}</h1>
-            {% if recipes[0].recipe_id %}
+            {% if recipes %}
                 {% if recipes.length == 1 %}
                     <p>1 receita</p>
                 {% else %}
@@ -23,15 +23,15 @@
 
         <h1>Receitas</h1>
         <div class="cards">
-            {% if recipes[0].recipe_id %}
+            {% if recipes %}
                 {% for recipe in recipes %}
                     <div class="card" id="{{ recipe.id }}">
-                        <a href="/recipes/{{ recipe.recipe_id }}"><img src="{{ recipe.image }}" alt="{{ recipe.title }}"></a>
+                        <a href="/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
                         <div>
                             <h1>{{ recipe.title }}</h1>
                             <p>por
                                 {{ chef.name }}</p>
-                            <a href="/recipes/{{ recipe.recipe_id }}">Visualizar</a>
+                            <a href="/recipes/{{ recipe.id }}">Visualizar</a>
                         </div>
                     </div>
                 {% endfor %}

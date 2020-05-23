@@ -11,7 +11,7 @@
             <button>Deletar</button>
             <input type="hidden" name="id" value="{{recipe.id}}">
         </form>
-        <form class="edit-form" method="POST" action="/admin/recipes/?_method=PUT">
+        <form class="edit-form" method="POST" action="/admin/recipes/?_method=PUT" enctype="multipart/form-data">
             <button>Salvar receita</button>
             <section class="fields">
                 {% include 'admin/recipe/fields.njk' %}

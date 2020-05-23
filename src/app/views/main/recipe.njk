@@ -6,9 +6,9 @@
 
 {% block content %}
     <div class="card recipe">
-        <img src="{{ recipes.image }}" alt="{{ recipes.title }}">
-        <h1>{{ recipes.title }}</h1>
-        <a href="/chefs/{{recipes.chef_id}}"><p>por {{ recipes.chef }}</p></a>
+        <img src="{{ files[0].src }}" alt="{{ recipe.title }}">
+        <h1>{{ recipe.title }}</h1>
+        <a href="/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
     </div>
 
     <div class="recipe_content">
@@ -19,7 +19,7 @@
         </div>
 
         <ul class="ingredient_">
-            {% for ingredient in recipes.ingredients %}
+            {% for ingredient in recipe.ingredients %}
                 <li>
                     {{ ingredient }}
                 </li>
@@ -32,7 +32,7 @@
         </div>
 
         <ul class="preparation_">
-            {% for step in recipes.preparation %}
+            {% for step in recipe.preparation %}
                 <li>
                     {{ step }}
                 </li>
@@ -45,7 +45,7 @@
         </div>
 
         <p class="information_">
-            {{ recipes.information }}
+            {{ recipe.information }}
         </p>
 
     </div>

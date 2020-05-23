@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin-chefs')
+const Chef = require('../models/Chef')
 
 exports.index = function (req, res) { // Mostrar a lista de receitas
     Admin.all(function (chefs) {
@@ -11,12 +12,29 @@ exports.create = function (req, res) { // Mostrar formulário de nova receita
 }
 
 
-exports.show = function (req, res) { // Exibir detalhes de uma receita
-    const id = req.params.id;
+exports.show = async function (req, res) { // Exibir detalhes de uma receita
+    let results = await Chef.find(req.params.id);
 
-    Admin.find(id, function (chef) {
-        return res.render("admin/chef/detail", { chef: chef[0], recipes: chef })
-    });
+    let recipes = [];
+    let total_recipes = 0;
+
+    if (results.rows[0].path) {
+        recipes = results.rows;
+        recipes = recipes.map(recipe => ({
+            ...recipe,
+            src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
+        }));
+
+        total_recipes = results.rows.length;
+    }
+
+    let chef = {
+        id: results.rows[0].chef_id,
+        name: results.rows[0].chef,
+        image: results.rows[0].avatar_url
+    }
+
+    return res.render("admin/chef/detail", { chef, recipes, total_recipes })
 }
 
 exports.edit = function (req, res) { // Mostrar formulários de edição de receita

@@ -484,6 +484,9 @@ button {
     font-weight: bold;
     font-size: 16px;
     margin: 10px 0;
+    width: fit-content;
+    margin-left: auto;
+    padding: 8px 0;
     color: #6558C3;
     text-align: right;
     cursor: pointer;

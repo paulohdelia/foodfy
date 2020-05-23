@@ -1,22 +1,39 @@
-const Chefs = require('../models/Chefs');
+const Chef = require('../models/Chef');
 
 module.exports = {
     list(req, res) {
         if (req.query.filterChefs) {
-            Chefs.findBy(req.query.filterChefs, function(chefs, filter) {
+            Chef.findBy(req.query.filterChefs, function (chefs, filter) {
                 return res.render("main/chefs", { chefs, link_style: "chefs", filter });
             })
         } else {
-            Chefs.all(function (chefs) {
+            Chef.all(function (chefs) {
                 return res.render("main/chefs", { chefs, link_style: "chefs" });
             });
         }
 
     },
-    show(req, res) {
+    async show(req, res) {
         const id = req.params.index;
-        Chefs.find(id, function (chef) {
-            return res.render("main/chef", { chef: chef[0], recipes: chef, link_style: "chefs" })
-        });
+        
+        let results = await Chef.find(id);
+        
+        let recipes = [];
+
+        if (results.rows[0].path) {
+            recipes = results.rows;
+            recipes = recipes.map(recipe => ({
+                ...recipe,
+                src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
+            }));
+        }
+
+        let chef = {
+                id: results.rows[0].id,
+                name: results.rows[0].chef,
+                image: results.rows[0].avatar_url
+        }
+
+        return res.render("main/chef", { chef, recipes, link_style: "chefs" })
     }
 }
