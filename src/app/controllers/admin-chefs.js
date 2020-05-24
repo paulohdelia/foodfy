@@ -1,10 +1,10 @@
 const Admin = require('../models/Admin-chefs')
 const Chef = require('../models/Chef')
 
-exports.index = function (req, res) { // Mostrar a lista de receitas
-    Admin.all(function (chefs) {
-        return res.render("admin/chef/list", { chefs });
-    })
+exports.index = async function (req, res) { // Mostrar a lista de receitas
+    const results = await Chef.all()
+    chefs = results.rows;
+    return res.render("admin/chef/list", { chefs });
 }
 
 exports.create = function (req, res) { // Mostrar formulário de nova receita

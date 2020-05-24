@@ -62,7 +62,7 @@
     {% endif %}
 
 </div>
-<p class="add-btn" id="add-ingredient">Adicionar novo ingrediente</p>
+<p class="add-btn" id="add-ingredient" onclick="addIngredient()">Adicionar novo ingrediente</p>
 
 <div class="item" id="preparation">
     <h2>Modo de preparo</h2>
@@ -79,11 +79,11 @@
     {% endif %}
 
 </div>
-<p class="add-btn" id="add-step">Adicionar novo passo</p>
+<p class="add-btn" id="add-step" onclick="addSteps()">Adicionar novo passo</p>
 
 <div class="item" id="information">
     <h2>Informações adicionais</h2>
     <textarea name="information" cols="30" rows="10">{{recipe.information}}</textarea>
 </div>
 
-<script src="/photos.js"></script>
+

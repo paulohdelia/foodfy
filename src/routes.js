@@ -40,8 +40,8 @@ router.get("/admin/chefs/create", adminChefs.create)
 router.get("/admin/chefs/:id", adminChefs.show)
 router.get("/admin/chefs/:id/edit", adminChefs.edit)
 
-router.post("/admin/chefs", adminChefs.post)
-router.put("/admin/chefs", adminChefs.put)
+router.post("/admin/chefs",  multer.array('photos', 1), adminChefs.post)
+router.put("/admin/chefs",  multer.array('photos', 1), adminChefs.put)
 router.delete("/admin/chefs", adminChefs.delete)
 
 module.exports = router;

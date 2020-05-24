@@ -23,6 +23,3 @@ function addSteps() {
 
     preparation.appendChild(newField);
 }
-
-document.querySelector("#add-ingredient").addEventListener("click", addIngredient)
-document.querySelector("#add-step").addEventListener("click", addSteps)

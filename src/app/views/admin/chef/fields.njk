@@ -5,5 +5,20 @@
 
 <div class="item">
     <h2>Avatar</h2>
-    <input type="url" name="avatar_url" value="{{chef.avatar_url}}">
+    <div id="avatar-upload">
+        {% if file %}
+            <div class="photo" id="{{avatar}}">
+                <img src="{{avatar.src}}" alt="{{chef.name}}">
+                <i class="material-icons" onclick="AvatarUpload.removeOldPhoto(event)">
+                    delete_forever
+                </i>
+            </div>
+            <input type="hidden" name="removed_files">
+        {% endif %}
+    </div>
+    <div id="avatar">
+        <label for="avatar-input">Selecionar um arquivo</label>
+        <input id="avatar-input" type="file" name="photos" accept="image/*" onchange="AvatarUpload.handleFileInput(event)
+                ">
+    </div>
 </div>

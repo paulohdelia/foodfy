@@ -1,25 +1,19 @@
 const db = require('../../config/db');
 
 module.exports = {
-    all(callback) {
+    all() {
         const query = `
-            SELECT count(recipes.chef_id) as total_recipes, chefs.id , chefs.name, chefs.avatar_url
+            SELECT *
                 FROM chefs
                 LEFT JOIN recipes ON recipes.chef_id = chefs.id
-                GROUP BY chefs.name, chefs.avatar_url, chefs.id 
         `
-
-        db.query(query, function (err, results) {
-            if (err) throw `Database Error! ${err}`;
-
-            callback(results.rows)
-        })
+        return db.query(query);
     },
 
     find(id) {
         const query = `
             SELECT DISTINCT ON (recipes.title) 
-                chefs.id as chef_id, chefs.name as chef, chefs.avatar_url,
+                chefs.id as chef_id, chefs.name as chef, 
                 recipes.title, recipes.id,
                 files.path  
                 FROM chefs
@@ -32,14 +26,14 @@ module.exports = {
     },
     findBy(filter, callback) {
         const query = `
-            SELECT count(recipes.chef_id) as total_recipes, chefs.id , chefs.name, chefs.avatar_url
+            SELECT count(recipes.chef_id) as total_recipes, chefs.id , chefs.name,             
             FROM chefs
             LEFT JOIN recipes ON recipes.chef_id = chefs.id
             WHERE chefs.name ILIKE '%${filter}%'
-            GROUP BY chefs.name, chefs.avatar_url, chefs.id 
+            GROUP BY chefs.name,  chefs.id 
         `
 
-        db.query(query, function(err, results) {
+        db.query(query, function (err, results) {
             if (err) throw `Database Error!`;
             callback(results.rows, filter)
         });
