@@ -1,4 +1,7 @@
 const db = require('../../config/db');
+const { date } = require('../../lib/utils')
+const File = require('../models/File')
+const Recipe = require('../models/Recipe')
 
 module.exports = {
     all() {
@@ -9,33 +12,58 @@ module.exports = {
         `
         return db.query(query);
     },
-
-    find(id) {
+    create({ name, file_id }) { //#
         const query = `
-            SELECT DISTINCT ON (recipes.title) 
-                chefs.id as chef_id, chefs.name as chef, 
-                recipes.title, recipes.id,
-                files.path  
-                FROM chefs
-                LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
-                LEFT JOIN recipe_files ON (recipe_files.recipe_id = recipes.id)
-                LEFT JOIN files ON (files.id = recipe_files.file_id) 
-                WHERE chefs.id = $1
+            INSERT INTO chefs (
+                name,
+                file_id,
+                created_at
+            ) VALUES ($1, $2, $3)
+            RETURNING id
         `
-        return db.query(query, [id]);
+
+        const values = [
+            name,
+            file_id,
+            date(Date.now()).iso
+        ]
+
+        return db.query(query, values);
     },
-    findBy(filter, callback) {
+    update({ name, file_id, id }) {
         const query = `
-            SELECT count(recipes.chef_id) as total_recipes, chefs.id , chefs.name,             
-            FROM chefs
-            LEFT JOIN recipes ON recipes.chef_id = chefs.id
-            WHERE chefs.name ILIKE '%${filter}%'
-            GROUP BY chefs.name,  chefs.id 
+            UPDATE chefs SET
+                name=($1),
+                file_id=($2)
+            WHERE id = $3
         `
 
-        db.query(query, function (err, results) {
-            if (err) throw `Database Error!`;
-            callback(results.rows, filter)
-        });
+        const values = [
+            name,
+            file_id,
+            id
+        ]
+
+        return db.query(query, values);
+    },
+    find(id) {
+        return db.query('SELECT * FROM chefs WHERE id = $1', [id]);
+    },
+    getAvatar(id) {
+        return db.query('SELECT * FROM chefs LEFT JOIN files ON (chefs.file_id = files.id) WHERE chefs.id = $1', [id])
+    },
+    async delete(id) {
+        let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
+        const file_id = results.rows[0].file_id;
+
+        await File.delete(file_id);
+
+        results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
+        const recipes = results.rows;
+
+        const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
+        await Promise.all(removedRecipes);
+        
+        return
     }
 }

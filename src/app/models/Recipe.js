@@ -1,5 +1,6 @@
 const db = require('../../config/db');
 const { date } = require('../../lib/utils');
+const File = require('../models/File')
 
 module.exports = {
     all(limit) {
@@ -87,5 +88,19 @@ module.exports = {
         ]
 
         return db.query(query, values);
+    },
+    async delete(id) {
+        let results = await db.query('SELECT * FROM recipe_files WHERE recipe_id = $1', [id]);
+        results.rows.map(async row =>  {
+            await db.query('DELETE FROM recipe_files WHERE id = $1', [row.id])
+            await File.delete(row.file_id)
+            try {
+                await db.query('DELETE FROM recipes WHERE id = $1', [row.recipe_id])
+            } catch {
+                
+            }
+        })
+
+        return
     }
 }

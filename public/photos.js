@@ -106,7 +106,7 @@ const PhotosUpload = {
 
 const AvatarUpload = {
     input: '',
-    preview: document.querySelector('#avatar-upload'),
+    preview: document.querySelector('#avatar-preview'),
     uploadLimit: 1,
     files: [],
     handleFileInput(event) {
@@ -148,7 +148,7 @@ const AvatarUpload = {
 
         const photosDiv = []
         preview.childNodes.forEach(item => {
-            if (item.classList && item.classList.value == 'photo') {
+            if (item.classList == 'photo') {
                 photosDiv.push(item);
             }
         });
@@ -199,9 +199,8 @@ const AvatarUpload = {
     },
     removeOldPhoto(event) {
         const photoDiv = event.target.parentNode;
-
         if (photoDiv.id) {
-            const removedFiles = document.querySelector('input[name="removed_files"');
+            const removedFiles = document.querySelector('input[name="removed_files"]');
             if(removedFiles) {
                 removedFiles.value += `${photoDiv.id},`
             }

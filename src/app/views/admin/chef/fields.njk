@@ -5,20 +5,26 @@
 
 <div class="item">
     <h2>Avatar</h2>
-    <div id="avatar-upload">
-        {% if file %}
-            <div class="photo" id="{{avatar}}">
-                <img src="{{avatar.src}}" alt="{{chef.name}}">
+    {% if image %}
+        <div id="avatar-preview" class="on">
+            <input type="hidden" name="removed_files">
+            <div class="photo" id="{{image.id}}">
+                <img src="{{image.src}}" alt="{{chef.name}}">
                 <i class="material-icons" onclick="AvatarUpload.removeOldPhoto(event)">
-                    delete_forever
+                    close
                 </i>
             </div>
-            <input type="hidden" name="removed_files">
+        {% else%}
+            <div id="avatar-preview">
+            
+            </div>
         {% endif %}
-    </div>
-    <div id="avatar">
-        <label for="avatar-input">Selecionar um arquivo</label>
-        <input id="avatar-input" type="file" name="photos" accept="image/*" onchange="AvatarUpload.handleFileInput(event)
+        </div>
+        <div id="avatar-upload">
+            <label for="avatar-input">Selecionar um arquivo</label>
+            <input id="avatar-input" type="file" name="photos" accept="image/*" onchange="AvatarUpload.handleFileInput(event)
                 ">
+        </div>
+        
+        <input type="hidden" name="old_file_id" value={{image.id}}>
     </div>
-</div>

@@ -635,31 +635,30 @@ form .item #photos-input {
 
 /* AVATAR UPLOAD */
 
-#avatar-upload {
+#avatar-preview {
     display: none;
 }
 
-#avatar-upload.on {
+#avatar-preview.on {
     display: block;
     width: 200px;
-    height: 200px;
     margin-bottom: 8px;
 }
 
 
-#avatar-upload .photo {
+#avatar-preview .photo {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-#avatar-upload .photo img{
-    height: 100%;
+#avatar-preview .photo img{
+    max-height: 200px;
     width: 100%;
     object-fit: cover;
 }
 
-#avatar-upload .photo i {
+#avatar-preview .photo i {
     position: absolute;
     top: 0;
     left: 0;
@@ -681,19 +680,19 @@ form .item #photos-input {
     transition: opacity 300ms;
 }
 
-#avatar-upload .photo i:hover {
+#avatar-preview .photo i:hover {
     opacity: 1;
 }
 
-#avatar {
+#avatar-upload {
     width: 200px;
 }
 
-#avatar input[type="file"] {
+#avatar-upload input[type="file"] {
   display: none;
 }
 
-#avatar label {
+#avatar-upload label {
     display: flex;
     align-items: center;
     justify-content: center;
