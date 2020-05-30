@@ -215,4 +215,3 @@ const AvatarUpload = {
         photoDiv.remove();
     }
 }
-

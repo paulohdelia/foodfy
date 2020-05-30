@@ -20,7 +20,7 @@
     <div class="cards">
         {% for recipe in recipes %}
             <div class="card" id="{{ recipe.id }}">
-                <img src="{{ recipe.src }}" alt="{{ recipe.title }}">
+                <a href="/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
                 <h1>{{ recipe.title }}</h1>
                 <a href="/chefs/{{recipe.chef_id}}">
                     <p>por
@@ -30,6 +30,6 @@
         {% endfor %}
     </div>
 
-    <script src="recipes.js"></script>
+    
 
 {% endblock %}

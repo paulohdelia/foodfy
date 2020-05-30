@@ -7,6 +7,11 @@
 {% block content %}
     <div class="card recipe">
         <img src="{{ files[0].src }}" alt="{{ recipe.title }}">
+        <div class="preview-gallery">
+                {%for file in files%}
+                    <img src="{{file.src}}" alt="recipe.name" {% if loop.index0 == 0 %} class="active" {% endif %} onclick="ImageGallery.setImage(event)">
+                {% endfor %}
+            </div>
         <h1>{{ recipe.title }}</h1>
         <a href="/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
     </div>
@@ -50,5 +55,5 @@
 
     </div>
 
-    <script src="/hide.js"></script>
+    
 {% endblock %}

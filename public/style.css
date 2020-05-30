@@ -272,11 +272,11 @@ footer p {
 }
 
 .card.recipe img {
-    max-width: 100%;
-    max-height: 100%;
-    
-    width: auto;
+    max-height: 300px;
+
     height: auto;
+
+    object-fit: cover;
 
     cursor: default;
 }
@@ -287,6 +287,31 @@ footer p {
 }
 .card.recipe p  {
     font-size: 150%;
+}
+
+/* PREVIEW GALLERY*/
+
+.card.recipe .preview-gallery {
+    justify-self: right;
+
+    margin-top: 8px;
+    height: 64px;
+}
+.card.recipe .preview-gallery img{
+    height: 100%;
+    width: 64px;
+
+    object-fit: cover;
+
+    margin-left: 8px;
+
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+.card.recipe .preview-gallery img:hover,
+.card.recipe .preview-gallery .active {
+    opacity: 1;
 }
 
 .recipe_content h1{
@@ -703,3 +728,5 @@ form .item #photos-input {
     width: 200px;
     height: 35px;
 }
+
+
