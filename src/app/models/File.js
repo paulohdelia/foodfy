@@ -28,6 +28,9 @@ module.exports = {
             console.error(err)
         }
 
-        return db.query('DELETE FROM files WHERE id = $1', [id])
+        return db.query(`
+            DELETE FROM recipe_files where file_id = ${id};
+            DELETE FROM files where id = ${id};
+        `);
     }
 }

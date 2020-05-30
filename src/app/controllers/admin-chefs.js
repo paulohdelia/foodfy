@@ -1,40 +1,34 @@
-const Admin = require('../models/Admin-chefs');
 const Chef = require('../models/Chef');
-const Recipe = require('../models/Recipe')
 const File = require('../models/File');
 
 module.exports = {
     async index(req, res) { // Mostrar a lista de receitas
         const results = await Chef.all()
-        chefs = results.rows;
+        let chefs = results.rows;
+
+        chefs = chefs.map(chef => ({
+            ...chef,
+            src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
+        }));
         return res.render("admin/chef/list", { chefs });
     },
-    async create(req, res) { // Mostrar formulário de nova receita
+    create(req, res) { // Mostrar formulário de nova receita
         return res.render("admin/chef/create")
     },
     async show(req, res) { // Exibir detalhes de uma receita
         let results = await Chef.find(req.params.id);
 
-        let recipes = [];
-        let total_recipes = 0;
+        let chef = results.rows[0];
+        chef.src = `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`;
 
-        if (results.rows[0].path) {
-            recipes = results.rows;
-            recipes = recipes.map(recipe => ({
-                ...recipe,
-                src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
-            }));
+        results = await Chef.getRecipes(req.params.id);
+        let recipes = results.rows;
+        recipes = recipes.map(recipe => ({
+            ...recipe,
+            src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
+        }));
 
-            total_recipes = results.rows.length;
-        }
-
-        let chef = {
-            id: results.rows[0].chef_id,
-            name: results.rows[0].chef,
-            image: results.rows[0].avatar_url
-        }
-
-        return res.render("admin/chef/detail", { chef, recipes, total_recipes })
+        return res.render("admin/chef/detail", { chef, recipes })
     },
     async edit(req, res) { // Mostrar formulários de edição de receita
 

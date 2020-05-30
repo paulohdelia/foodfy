@@ -18,12 +18,12 @@
         </div>
 
         <div class="card chef">
-            <img src="{{ chef.image }}" alt="{{ chef.name }}">
+            <img src="{{ chef.src }}" alt="{{ chef.name }}">
             <h1>{{ chef.name }}</h1>
-            {% if total_recipes == 1 %}
+            {% if chef.total_recipes == 1 %}
                 <p>1 receita</p>
             {% else %}
-                <p>{{total_recipes}}
+                <p>{{chef.total_recipes}}
                     receitas</p>
             {% endif %}
         </div>

@@ -37,15 +37,7 @@ module.exports = {
         return db.query(query, values);
     },
 
-    find(id) {
-        query = `
-            SELECT recipes.*, chefs.name as chef, chefs.id as chef_id
-                FROM recipes 
-                LEFT JOIN chefs ON chefs.id = recipes.chef_id 
-                WHERE recipes.id = $1
-        `
-        return db.query(query, [id]);
-    },
+    
 
     update(data, callback) {
         const query = `
@@ -83,7 +75,5 @@ module.exports = {
         });
     },
 
-    listChefs() {
-        return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
-    }
+    
 }
