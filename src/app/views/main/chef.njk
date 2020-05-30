@@ -8,34 +8,29 @@
     <section>
 
         <div class="card chef">
-            <img src="{{ chef.image }}" alt="{{ chef.name }}">
+            <img src="{{ chef.src }}" alt="{{ chef.name }}">
             <h1>{{ chef.name }}</h1>
-            {% if recipes %}
-                {% if recipes.length == 1 %}
-                    <p>1 receita</p>
-                {% else %}
-                    <p>{{recipes.length}} receitas</p>
-                {% endif %}
+            {% if chef.total_recipes == 1 %}
+                <p>1 receita</p>
             {% else %}
-                <p>0 receitas</p>
+                <p>{{chef.total_recipes}}
+                    receitas</p>
             {% endif %}
         </div>
 
         <h1>Receitas</h1>
         <div class="cards">
-            {% if recipes %}
-                {% for recipe in recipes %}
-                    <div class="card" id="{{ recipe.id }}">
-                        <a href="/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
-                        <div>
-                            <h1>{{ recipe.title }}</h1>
-                            <p>por
-                                {{ chef.name }}</p>
-                            <a href="/recipes/{{ recipe.id }}">Visualizar</a>
-                        </div>
+            {% for recipe in recipes %}
+                <div class="card" id="{{ recipe.id }}">
+                    <a href="/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
+                    <div>
+                        <h1>{{ recipe.title }}</h1>
+                        <p>por
+                            {{ chef.name }}</p>
+                        <a href="/recipes/{{ recipe.id }}">Visualizar</a>
                     </div>
-                {% endfor %}
-            {% endif %}
+                </div>
+            {% endfor %}
         </div>
     </section>
 

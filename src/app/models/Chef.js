@@ -4,7 +4,7 @@ const File = require('../models/File')
 const Recipe = require('../models/Recipe')
 
 module.exports = {
-    all() {
+    all({filter = null}) {
         const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
@@ -14,6 +14,7 @@ module.exports = {
             FROM chefs LEFT JOIN recipes ON(chefs.id = recipes.chef_id)
                 GROUP BY chefs.id
         ) as COUNT ON chefs.id = count.chef_id
+        WHERE chefs.name ILIKE '%${filter}%'
         `
         return db.query(query);
     },
