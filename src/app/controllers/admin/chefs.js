@@ -1,9 +1,9 @@
-const Chef = require('../models/Chef');
-const File = require('../models/File');
+const Chef = require('../../models/Chef');
+const File = require('../../models/File');
 
 module.exports = {
     async index(req, res) { // Mostrar a lista de receitas
-        const results = await Chef.all()
+        const results = await Chef.all({})
         let chefs = results.rows;
 
         chefs = chefs.map(chef => ({

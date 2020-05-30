@@ -2,11 +2,11 @@ const express = require('express');
 
 const multer = require('./app/middlewares/multer');
 
-const recipes = require('./app/controllers/recipes')
-const chefs = require('./app/controllers/chefs')
+const recipes = require('./app/controllers/main/recipes')
+const chefs = require('./app/controllers/main/chefs')
 
-const adminRecipes = require('./app/controllers/admin-recipes')
-const adminChefs = require('./app/controllers/admin-chefs')
+const adminRecipes = require('./app/controllers/admin/recipes')
+const adminChefs = require('./app/controllers/admin/chefs')
 
 const router = express.Router();
 

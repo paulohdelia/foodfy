@@ -4,7 +4,7 @@ const File = require('../models/File')
 const Recipe = require('../models/Recipe')
 
 module.exports = {
-    all({filter = null}) {
+    all({filter = ''}) {
         const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
