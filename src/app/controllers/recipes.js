@@ -42,7 +42,7 @@ module.exports = {
             info.filter = filter
         }
     
-        return res.render("main/recipes", info);
+        return res.render("main/recipe/list", info);
     },
     async recipe(req, res) {
         const results = await Recipe.find(req.params.index);
@@ -57,6 +57,6 @@ module.exports = {
             ...results.rows[0]
         }
     
-        return res.render("main/recipe", { recipe, files, link_style: "recipes" })
+        return res.render("main/recipe/detail", { recipe, files, link_style: "recipes" })
     }
 }

@@ -23,7 +23,7 @@ module.exports = {
             info.filter = filter
         }
         
-        return res.render("main/chefs", info);
+        return res.render("main/chef/list", info);
     },
     async show(req, res) {
         let results = await Chef.find(req.params.index);
@@ -38,6 +38,6 @@ module.exports = {
             src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
         }));
 
-        return res.render("main/chef", { chef, recipes, link_style: "chefs" })
+        return res.render("main/chef/detail", { chef, recipes, link_style: "chefs" })
     }
 }

@@ -18,7 +18,6 @@
     "pg": "^8.0.2"
   },
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.2",
     "nodemon": "^2.0.2"
   }
 }
