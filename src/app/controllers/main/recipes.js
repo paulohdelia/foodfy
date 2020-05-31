@@ -2,7 +2,7 @@ const Recipe = require('../../models/Recipe');
 
 module.exports = {
     async index(req, res) {
-        const results = await Recipe.all({ limit: 6, reverse: true });
+        const results = await Recipe.all({ limit: 6 });
     
         let recipes = results.rows;
         recipes = recipes.map(recipe => ({
@@ -26,7 +26,8 @@ module.exports = {
         if(req.query.filterRecipes) {
             filter = req.query.filterRecipes
         }
-        const results = await Recipe.all({ filter })
+        const allParametes = filter == '' ? {} : { filter, orderBy: 'updated_at' }
+        const results = await Recipe.all(allParametes)
         let recipes = results.rows;
         recipes = recipes.map(recipe => ({
             ...recipe,

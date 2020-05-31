@@ -4,7 +4,7 @@ const Chef = require('../../models/Chef');
 
 module.exports = {
     async index(req, res) {
-        let results = await Recipe.all({});
+        let results = await Recipe.all({orderBy: 'created_at'});
         let recipes = results.rows;
 
         recipes = recipes.map(recipe => ({

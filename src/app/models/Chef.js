@@ -71,13 +71,16 @@ module.exports = {
     },
     getRecipes(id) {
         return db.query(`
+        SELECT * FROM (
             SELECT DISTINCT ON (recipes.id) 
-            recipes.id, recipes.title, files.path 
+            recipes.id, recipes.title, recipes.created_at,
+            files.path
             FROM recipes
             LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
             LEFT JOIN recipe_files ON (recipe_files.recipe_id = recipes.id)
             LEFT JOIN files ON (recipe_files.file_id = files.id)
-            WHERE chefs.id = $1        
+            WHERE chefs.id = $1 ) results
+          ORDER BY created_at DESC       
         `, [id])
     },
     getNames() {

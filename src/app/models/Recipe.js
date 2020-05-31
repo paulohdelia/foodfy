@@ -3,14 +3,13 @@ const { date } = require('../../lib/utils');
 const File = require('../models/File')
 
 module.exports = {
-    all({limit = null, filter = '', reverse = false}) {
-
-        const order = reverse ? 'DESC' : 'ASC';
+    all({ filter = '', orderBy = 'created_at', limit = null }) {
 
         return db.query(`
+        SELECT * FROM (
             SELECT DISTINCT ON (recipe_files.recipe_id)
             recipe_files.recipe_id AS id, recipe_files.file_id,
-            recipes.title, recipes.chef_id,
+            recipes.title, recipes.chef_id, recipes.created_at, recipes.updated_at,
             files.path, files.name,
             chefs.name as chef
             FROM recipe_files 
@@ -18,9 +17,10 @@ module.exports = {
             LEFT JOIN files ON (files.id = recipe_files.file_id)
             LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
             WHERE recipes.title ILIKE '%${filter}%'
-            ORDER BY id ${order}
-            LIMIT(${limit})
-        `)
+          ) results
+          ORDER BY ${orderBy} DESC
+          LIMIT(${limit})          
+        `);
     },
     find(id) {
         const query = `
@@ -45,9 +45,8 @@ module.exports = {
                     title,
                     ingredients,
                     preparation,
-                    information,
-                    created_at
-                ) VALUES ($1, $2, $3, $4, $5, $6)
+                    information
+                ) VALUES ($1, $2, $3, $4, $5)
                 RETURNING id
             `
 
@@ -56,8 +55,7 @@ module.exports = {
             data.title,
             data.ingredients,
             data.preparation,
-            data.information,
-            date(Date.now()).iso
+            data.information
         ]
         return db.query(query, values);
     },
