@@ -1,0 +1,24 @@
+{% extends 'admin/layout.njk' %}
+
+{% block head %}
+  <title>Perfil - Foodfy</title>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <form action="/admin/profile/?_method=PUT" class="profile-form" method="POST">
+      <div class="title-btn">
+        <h1>Bem vindo ...</h1>
+        <span>
+          <a href="#">
+            <button>Salvar</button>
+          </a>
+        </span>
+      </div>
+      <div class="profile-inputs">
+        {% include 'admin/profile/fields.njk' %}
+      </div>
+
+    </form>
+  </section>
+{% endblock content %}

@@ -803,3 +803,9 @@ form .item #photos-input {
 .forgot-password-button {
   margin-top: 35px;
 }
+
+.profile-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 40px;
+}
