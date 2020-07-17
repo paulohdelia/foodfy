@@ -1,0 +1,25 @@
+{% extends 'admin/layout.njk' %}
+
+{% block head %}
+  <title>Listagem Usuários - Foodfy</title>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="space-between edit-user-delete">
+      <h1>Criar Usuário</h1>
+
+      <form id="form-delete" action="/admin/users/?_method=DELETE" method="POST">
+        {# <input type="hidden" name="id" value="{{ .id}}"> #}
+        <button class="button delete" type="submit">Deletar</button>
+      </form>
+    </div>
+
+    <form action="/admin/users/edit/?_method=PUT" class="edit-user-update" method="POST">
+      <button type="submit">Salvar</button>
+      <div class="register-user-inputs">
+        {% include 'admin/users/fields.njk' %}
+      </div>
+    </form>
+  </section>
+{% endblock content %}

@@ -890,3 +890,19 @@ label[for="is-adm-checkbox"] {
   background-color: #8a8a8a;
   margin-left: 16px;
 }
+
+.edit-user-delete {
+  align-items: center;
+}
+
+.edit-user-delete button {
+  margin-right: 91px;
+  background-color: #dc4747;
+}
+
+.edit-user-update button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+}

@@ -8,7 +8,9 @@ routes.get("/register", UserController.create);
 routes.post("/register", UserController.post); //Cadastrar um usuário
 
 routes.get("/", UserController.list); //Mostrar a lista de usuários cadastrados
-routes.put("/", UserController.put); // Editar um usuário
+
+routes.get("/edit", UserController.edit); //Mostrar a lista de usuários cadastrados
+routes.put("/edit", UserController.put); // Editar um usuário
 routes.delete("/", UserController.delete); // Deletar um usuário
 
 module.exports = routes;
