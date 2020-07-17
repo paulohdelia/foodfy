@@ -10,9 +10,14 @@
       <div class="title-btn">
         <h1>Criar Usuário</h1>
 
-        <span>
-          <button type="submit">Salvar</button>
-        </span>
+        <div class="flex-end">
+          <span>
+            <button type="submit">Salvar</button>
+          </span>
+          <span class="button" href="/admin/users">
+            Cancelar
+          </span>
+        </div>
       </div>
       <div class="register-user-inputs">
         {% include 'admin/users/fields.njk' %}

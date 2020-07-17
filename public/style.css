@@ -448,7 +448,7 @@ footer p {
 
 button {
   padding: 8px 16px;
-  background-color: #7519c1;
+  background-color: #6558c3;
   border-radius: 4px;
   color: white;
   font-size: 16px;
@@ -874,4 +874,19 @@ label[for="is-adm-checkbox"] {
   font-size: 16px;
   color: #111111;
   font-weight: bold;
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #6558c3;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.register-form .button {
+  background-color: #8a8a8a;
+  margin-left: 16px;
 }
