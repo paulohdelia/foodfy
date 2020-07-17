@@ -1,0 +1,22 @@
+<div class="session-input">
+  <p>Email</p>
+  <div class="input">
+    <input type="email" name="email" placeholder="Digite seu email" value="{{user.email}}" required="required">
+  </div>
+</div>
+
+<div class="session-input">
+  <p>Senha</p>
+  <div class="input">
+    <input type="password" name="password" placeholder="Digite uma nova senha" required="required">
+  </div>
+</div>
+
+<div class="session-input">
+  <p>Repetir senha</p>
+  <div class="input">
+    <input type="password" name="passwordRepeat" placeholder="Repita a nova senha" required="required">
+  </div>
+</div>
+
+<input type="hidden" name="token" value="{{token}}">

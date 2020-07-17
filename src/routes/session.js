@@ -11,7 +11,7 @@ routes.get("/login", SessionController.loginForm);
 
 // Reset Password
 routes.get("/forgot-password", SessionController.forgotForm);
-// routes.get('/reset-password', SessionController.resetForm);
+routes.get("/reset-password", SessionController.resetForm);
 // routes.post('/forgot-password', SessionValidator.forgot, SessionController.forgot);
 // routes.post('/reset-password', SessionValidator.reset, SessionController.reset);
 
