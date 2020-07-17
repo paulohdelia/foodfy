@@ -9,11 +9,13 @@ const adminRecipes = require("../app/controllers/admin/recipes");
 const adminChefs = require("../app/controllers/admin/chefs");
 
 const users = require("./users");
+const profile = require("./profile");
 const session = require("./session");
 
 const routes = express.Router();
 
-routes.use("/admin", users);
+routes.use("/admin/users", users);
+routes.use("/admin/profile", profile);
 routes.use("/session", session);
 
 /* === MAIN === */

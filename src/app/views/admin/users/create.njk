@@ -1,0 +1,22 @@
+{% extends 'admin/layout.njk' %}
+
+{% block head %}
+  <title>Listagem Usuários - Foodfy</title>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <form action="/admin/users/register" class="register-form" method="POST">
+      <div class="title-btn">
+        <h1>Criar Usuário</h1>
+
+        <span>
+          <button type="submit">Salvar</button>
+        </span>
+      </div>
+      <div class="register-user-inputs">
+        {% include 'admin/users/fields.njk' %}
+      </div>
+    </form>
+  </section>
+{% endblock content %}
