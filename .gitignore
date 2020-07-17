@@ -1,4 +1,4 @@
 node_modules
-*.jpeg
-*.jpg
-*.png
+
+public/images/*
+!.gitkeep
