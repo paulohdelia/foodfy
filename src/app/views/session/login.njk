@@ -1,0 +1,14 @@
+{% extends "session/layout.njk" %}
+
+{% block head %}
+  <title>Login - Foodfy</title>
+{% endblock %}
+
+{% block content %}
+  <h2 class="session-title">Iniciar Sessão</h2>
+  {% include 'session/fields.njk' %}
+  <div class="space-between">
+    <span class="session-forgot-password">Perdeu a senha?</span>
+    <button>Acessar</button>
+  </div>
+{% endblock content %}

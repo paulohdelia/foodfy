@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    {% block head %}
+      <title>Foodfy</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <div class="session-container">
+      <header class="session-header">
+        <img class="session-logo" src="/assets/logo-dark.png" alt="foodfy"/>
+      </header>
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+
+</html>
