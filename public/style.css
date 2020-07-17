@@ -756,6 +756,10 @@ form .item #photos-input {
   margin-top: 35px;
 }
 
+.session-form {
+  width: 100%;
+}
+
 .session-input:not(:first-of-type) {
   margin-bottom: 49px;
 }
@@ -789,4 +793,13 @@ form .item #photos-input {
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.forgot-password-button {
+  margin-top: 35px;
 }

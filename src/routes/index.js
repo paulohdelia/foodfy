@@ -7,17 +7,14 @@ const chefs = require("../app/controllers/main/chefs");
 
 const adminRecipes = require("../app/controllers/admin/recipes");
 const adminChefs = require("../app/controllers/admin/chefs");
-const SessionController = require("../app/controllers/admin/SessionController");
 
 const users = require("./users");
+const session = require("./session");
 
 const routes = express.Router();
 
 routes.use("/admin", users);
-
-routes.get("/login", SessionController.loginForm);
-// routes.post("/login", SessionController.login);
-// routes.post("/logout", SessionController.logout);
+routes.use("/session", session);
 
 /* === MAIN === */
 

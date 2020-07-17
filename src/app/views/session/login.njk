@@ -6,9 +6,12 @@
 
 {% block content %}
   <h2 class="session-title">Iniciar Sessão</h2>
-  {% include 'session/fields.njk' %}
-  <div class="space-between">
-    <span class="session-forgot-password">Perdeu a senha?</span>
-    <button>Acessar</button>
-  </div>
+  <form action="/session/login" class="session-form" method="POST">
+    {% include 'session/fields.njk' %}
+    <div class="space-between">
+      <span class="session-forgot-password">Perdeu a senha?</span>
+      <button type="submit">Acessar</button>
+    </div>
+  </form>
+
 {% endblock content %}
