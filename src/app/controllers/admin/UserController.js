@@ -20,13 +20,13 @@ module.exports = {
   },
   async post(req, res) {
     try {
-      const { name, email, is_adm } = req.body;
+      const { name, email, is_admin } = req.body;
 
       const token = crypto.randomBytes(20).toString("hex");
       const results = await User.create({
         name,
         email,
-        is_adm,
+        is_admin,
         password: token,
       });
       const id = results.rows[0].id;
@@ -47,7 +47,7 @@ module.exports = {
           <h2>Bem vindo ao Foodfy</h2>
           <p>Este é seu link de acesso, click nele para registrar uma senha nova para seu usuário.</p>
           <p>
-          <a href="http://localhost:5000/users/password-reset?token=${token}" target="_blank">
+          <a href="http://localhost:5000/session/reset-passwordt?token=${token}" target="_blank">
                 Recuperar senha                
             </a>
             </p>      
@@ -66,12 +66,12 @@ module.exports = {
     }
   },
   async put(req, res) {
-    const { name, email, is_adm = false, id } = req.body;
+    const { name, email, is_admin = false, id } = req.body;
 
     const keys = Object.keys(req.body);
 
     for (key of keys) {
-      if (req.body[key] == "" && key != "is_adm") {
+      if (req.body[key] == "" && key != "is_admin") {
         return res.send("Please, fill all fields!");
       }
     }
@@ -84,7 +84,7 @@ module.exports = {
       });
     }
 
-    await User.update(id, { name, email, is_admin: is_adm });
+    await User.update(id, { name, email, is_admin: is_admin });
     return res.redirect(`/admin/users`);
   },
   async delete(req, res) {

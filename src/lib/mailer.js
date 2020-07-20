@@ -4,7 +4,7 @@ module.exports = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
-    user: "8270d5480182cb",
-    pass: "338c827156f959",
+    user: "56aedafa542024",
+    pass: "8b9f51cb7d24dc",
   },
 });

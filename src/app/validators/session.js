@@ -54,14 +54,14 @@ async function reset(req, res, next) {
     let user = await User.findOne({ where: { email } });
 
     if (!user)
-      return res.render("session/password-reset", {
+      return res.render("session/reset-password", {
         usser: req.body,
         token,
         error: "Email não encontrado na nossa base de dados!",
       });
 
     if (password != passwordRepeat) {
-      return res.render("session/password-reset", {
+      return res.render("session/reset-password", {
         user: req.body,
         token,
         error: "As senhas estão diferentes.",
@@ -69,7 +69,7 @@ async function reset(req, res, next) {
     }
 
     if (token !== user.reset_token) {
-      return res.render("session/password-reset", {
+      return res.render("session/reset-password", {
         user: req.body,
         token,
         error: "Token inválido! Solicite uma nova recuperação de senha.",
@@ -80,7 +80,7 @@ async function reset(req, res, next) {
     now = now.setHours(now.getHours());
 
     if (now > user.reset_token_expires) {
-      return res.render("session/password-reset", {
+      return res.render("session/reset-password", {
         user: req.body,
         error: "Token expirou! Solicite uma nova recuperação de senha.",
       });

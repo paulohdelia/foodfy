@@ -3,7 +3,7 @@ const { hash, genSalt } = require("bcryptjs");
 const mailer = require("../../lib/mailer");
 
 module.exports = {
-  async create({ name, email, is_adm, password }) {
+  async create({ name, email, is_admin, password }) {
     const query = `
             INSERT INTO users (
                 name,
@@ -14,7 +14,7 @@ module.exports = {
             RETURNING id
         `;
 
-    const values = [name, email, is_adm, password];
+    const values = [name, email, is_admin, password];
 
     return db.query(query, values);
   },

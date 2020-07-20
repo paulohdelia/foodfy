@@ -18,7 +18,7 @@ async function post(req, res, next) {
   const keys = Object.keys(req.body);
 
   for (key of keys) {
-    if (req.body[key] == "" && key != "is_adm") {
+    if (req.body[key] == "" && key != "is_admin") {
       return res.send("Please, fill all fields!");
     }
   }
