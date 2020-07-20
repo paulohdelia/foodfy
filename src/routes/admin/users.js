@@ -1,7 +1,8 @@
 const express = require("express");
+
 const routes = express.Router();
 
-const UserController = require("../app/controllers/admin/UserController");
+const UserController = require("../../app/controllers/admin/UserController");
 
 routes.get("/register", UserController.create);
 routes.post("/register", UserController.post);
