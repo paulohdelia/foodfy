@@ -10,7 +10,7 @@
       <h1>Criar Usuário</h1>
 
       <form id="form-delete" action="/admin/users/?_method=DELETE" method="POST">
-        {# <input type="hidden" name="id" value="{{ .id}}"> #}
+        <input type="hidden" name="id" value="{{ user.id }}">
         <button class="button delete" type="submit">Deletar</button>
       </form>
     </div>
@@ -20,6 +20,7 @@
       <div class="register-user-inputs">
         {% include 'admin/users/fields.njk' %}
       </div>
+      <input type="hidden" name="id" value="{{ user.id }}">
     </form>
   </section>
 {% endblock content %}

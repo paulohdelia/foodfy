@@ -813,7 +813,6 @@ form .item #photos-input {
 .user-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 .user-item {
@@ -859,7 +858,17 @@ form .item #photos-input {
   margin-left: 16px;
 }
 
-#is-adm-checkbox {
+.user-item form {
+  width: min(200px, 50%);
+}
+
+.user-item form p {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#is_adm {
   width: fit-content;
   margin-right: 8px;
 }
@@ -870,7 +879,7 @@ form .item #photos-input {
   gap: 35px 40px;
 }
 
-label[for="is-adm-checkbox"] {
+label[for="is_adm"] {
   font-size: 16px;
   color: #111111;
   font-weight: bold;
@@ -905,4 +914,8 @@ label[for="is-adm-checkbox"] {
   right: 0;
   top: 0;
   margin: 0;
+}
+
+.button a {
+  color: white;
 }

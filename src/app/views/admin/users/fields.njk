@@ -9,7 +9,7 @@
 </div>
 
 <div class="item">
-  <input type="checkbox" id="is-adm-checkbox" name="is-adm-checkbox" value="true">
-  <label for="is-adm-checkbox">
+  <input type="checkbox" id="is_adm" name="is_adm" value="true" {% if user.is_admin == true %} checked="checked" {% endif %}>
+  <label for="is_adm">
     Administrador</label><br>
 </div>

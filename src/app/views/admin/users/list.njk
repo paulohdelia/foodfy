@@ -16,91 +16,21 @@
     </div>
   </section>
   <section class="user-list">
-
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
-    <div class="user-item">
-      <form method="POST">
-        <h3>Paulo D'Elia</h3>
-        <p>paulohdelia@gmail.com</p>
-        <div>
-          <span>
-            <a href="#">Editar</a>
-          </span>
-          <button class="user-remove-button" type="submit">Remover</button>
-        </div>
-      </form>
-    </div>
+    {% for user in users %}
+      <div class="user-item">
+        <form method="POST" action="/admin/users/?_method=DELETE">
+          <h3>{{user.name}}</h3>
+          <p>{{user.email}}</p>
+          <div>
+            <span>
+              <a href="/admin/users/{{user.id}}">Editar</a>
+            </span>
+            <button class="user-remove-button" type="submit">Remover</button>
+            <input type="hidden" name="id" value="{{user.id}}">
+          </div>
+        </form>
+      </div>
+    {% endfor %}
 
   </section>
 {% endblock content %}
