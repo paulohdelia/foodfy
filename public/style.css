@@ -388,7 +388,7 @@ footer p {
 }
 
 .admin header a img {
-  margin-left: 15%;
+  float: none;
 }
 
 .admin .card {
@@ -918,4 +918,22 @@ label[for="is_adm"] {
 
 .button a {
   color: white;
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  margin: 0 15%;
+}
+
+.nav__secondary {
+  position: absolute;
+  right: 32px;
+}
+
+.nav__secondary--button {
+  background-color: transparent;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #ffffff;
 }
