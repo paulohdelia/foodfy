@@ -8,7 +8,7 @@ module.exports = {
         SELECT * FROM (
             SELECT DISTINCT ON (recipe_files.recipe_id)
             recipe_files.recipe_id AS id, recipe_files.file_id,
-            recipes.title, recipes.chef_id, recipes.created_at, recipes.updated_at,
+            recipes.title, recipes.chef_id, recipes.created_at, recipes.updated_at, recipes.user_id,
             files.path, files.name,
             chefs.name as chef
             FROM recipe_files 

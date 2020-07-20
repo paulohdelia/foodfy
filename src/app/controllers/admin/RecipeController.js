@@ -1,6 +1,7 @@
 const File = require("../../models/File");
 const Recipe = require("../../models/Recipe");
 const Chef = require("../../models/Chef");
+const User = require("../../models/User");
 
 module.exports = {
   async index(req, res) {
@@ -14,6 +15,13 @@ module.exports = {
         ""
       )}`,
     }));
+
+    // users can see only their recipes but admins can see all
+    if (!req.session.userIsAdmin) {
+      recipes = recipes.filter(
+        (recipe) => recipe.user_id == req.session.userId
+      );
+    }
     return res.render("admin/recipe/list", { recipes });
   },
   async create(req, res) {
@@ -27,6 +35,15 @@ module.exports = {
     // Exibir detalhes de uma receita
     const results = await Recipe.find(req.params.id);
     const recipe = results.rows[0];
+
+    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+      const id = req.session.userId;
+      const user = await User.findOne({ where: { id } });
+      return res.render("admin/profile/edit.njk", {
+        user,
+        error: "Acesso negado!",
+      });
+    }
 
     let files = results.rows;
     files = files.map((file) => ({
@@ -46,6 +63,15 @@ module.exports = {
 
     results = await Recipe.find(req.params.id);
     const recipe = results.rows[0];
+
+    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+      const id = req.session.userId;
+      const user = await User.findOne({ where: { id } });
+      return res.render("admin/profile/edit.njk", {
+        user,
+        error: "Acesso negado!",
+      });
+    }
 
     let files = results.rows;
     files = files.map((file) => ({
@@ -91,6 +117,20 @@ module.exports = {
   },
   async put(req, res) {
     // Editar uma receita
+    const id = req.body.id;
+
+    const results = await Recipe.find(id);
+    const recipe = results.rows[0];
+
+    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+      const id = req.session.userId;
+      const user = await User.findOne({ where: { id } });
+      return res.render("admin/profile/edit.njk", {
+        user,
+        error: "Acesso negado!",
+      });
+    }
+
     if (req.files.length > 0) {
       const newFilesPromise = req.files.map((file) => File.create({ ...file }));
       let results = await Promise.all(newFilesPromise);
@@ -117,9 +157,22 @@ module.exports = {
 
     return res.redirect(`/admin/recipes/${req.body.id}`);
   },
-  delete(req, res) {
+  async delete(req, res) {
     // Deletar uma receita
-    Recipe.delete(req.body.id);
+    const id = req.body.id;
+
+    const results = await Recipe.find(id);
+    const recipe = results.rows[0];
+
+    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+      const id = req.session.userId;
+      const user = await User.findOne({ where: { id } });
+      return res.render("admin/profile/edit.njk", {
+        user,
+        error: "Acesso negado!",
+      });
+    }
+    Recipe.delete(id);
 
     return res.redirect(`/admin/recipes`);
   },
