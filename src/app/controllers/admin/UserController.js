@@ -90,6 +90,25 @@ module.exports = {
   async delete(req, res) {
     const id = req.body.id;
 
+    if (!req.session.userIsAdmin) {
+      const results = await User.listAll();
+      const users = results.rows;
+      return res.render("admin/users/list.njk", {
+        users,
+        error:
+          "Apenas administradores podem excluir contas de outros usuários.",
+      });
+    }
+
+    if (req.session.userId == id) {
+      const results = await User.listAll();
+      const users = results.rows;
+      return res.render("admin/users/list.njk", {
+        users,
+        error: "Você não pode excluir a si mesmo!",
+      });
+    }
+
     await User.delete({ id });
 
     return res.redirect("/admin/users");
