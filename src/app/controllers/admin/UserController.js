@@ -1,5 +1,6 @@
 const User = require("../../models/User");
-const { hash, genSalt, compare } = require("bcryptjs");
+const mailer = require("../../../lib/mailer");
+const crypto = require("crypto");
 
 module.exports = {
   async list(req, res) {
@@ -18,10 +19,51 @@ module.exports = {
     return res.render("admin/users/edit.njk", { user });
   },
   async post(req, res) {
-    const { name, email, is_adm } = req.body;
+    try {
+      const { name, email, is_adm } = req.body;
 
-    await User.create({ name, email, is_adm });
-    return res.redirect(`/admin/users`);
+      const token = crypto.randomBytes(20).toString("hex");
+      const results = await User.create({
+        name,
+        email,
+        is_adm,
+        password: token,
+      });
+      const id = results.rows[0].id;
+
+      let now = new Date();
+      now = now.setHours(now.getHours() + 1);
+
+      await User.update(id, {
+        reset_token: token,
+        reset_token_expires: now,
+      });
+
+      await mailer.sendMail({
+        to: email,
+        from: "no-reply@foodfy.com.br",
+        subject: "Senha de acesso Foodfy",
+        html: `
+          <h2>Bem vindo ao Foodfy</h2>
+          <p>Este é seu link de acesso, click nele para registrar uma senha nova para seu usuário.</p>
+          <p>
+          <a href="http://localhost:5000/users/password-reset?token=${token}" target="_blank">
+                Recuperar senha                
+            </a>
+            </p>      
+      `,
+      });
+
+      return res.render("admin/users/create.njk", {
+        success: "Usuário criado com sucesso!",
+      });
+    } catch (err) {
+      console.error(err);
+      return res.render("admin/users/create.njk", {
+        user: req.body,
+        error: "Erro inesperado, tente novamente!",
+      });
+    }
   },
   async put(req, res) {
     const { name, email, is_adm = false, id } = req.body;

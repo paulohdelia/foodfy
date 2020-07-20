@@ -34,7 +34,7 @@ module.exports = {
         reset_token_expires: now,
       });
 
-      const a = await mailer.sendMail({
+      await mailer.sendMail({
         to: user.email,
         from: "no-reply@foodfy.com.br",
         subject: "Recuperação de senha Foodfy",

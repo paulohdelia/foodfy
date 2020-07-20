@@ -14,10 +14,7 @@ module.exports = {
             RETURNING id
         `;
 
-    const tempPassword = await genSalt();
-    const passwordHash = await hash(tempPassword, 8);
-
-    const values = [name, email, is_adm, passwordHash];
+    const values = [name, email, is_adm, password];
 
     return db.query(query, values);
   },
@@ -72,7 +69,6 @@ module.exports = {
             `;
       }
     });
-
     await db.query(query);
     return;
   },

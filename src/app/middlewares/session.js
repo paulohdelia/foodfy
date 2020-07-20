@@ -7,7 +7,7 @@ function isUser(req, res, next) {
 
 function isLoggedRedirectToUsers(req, res, next) {
   if (req.session.userId) {
-    return res.redirect("/users");
+    return res.redirect("/admin/profile");
   }
 
   next();
