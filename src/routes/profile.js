@@ -2,9 +2,9 @@ const express = require("express");
 const routes = express.Router();
 
 const ProfileController = require("../app/controllers/admin/ProfileController");
+const UserValidator = require("../app/validators/users");
 
-// Rotas de perfil de um usuário logado
-routes.get("/", ProfileController.index); // Mostrar o formulário com dados do usuário logado
-routes.put("/", ProfileController.put); // Editar o usuário logado
+routes.get("/", UserValidator.show, ProfileController.index);
+routes.put("/", UserValidator.update, ProfileController.put);
 
 module.exports = routes;

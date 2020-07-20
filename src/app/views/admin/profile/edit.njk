@@ -14,7 +14,7 @@
           <button type="submit">Salvar</button>
         </span>
       </div>
-      <input type="hidden" name="id" value="{{req.session.id}}">
+      <input type="hidden" name="id" value="{{user.id}}">
       <div class="profile-inputs">
         {% include 'admin/profile/fields.njk' %}
       </div>
