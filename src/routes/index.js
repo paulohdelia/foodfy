@@ -12,6 +12,8 @@ const users = require("./users");
 const profile = require("./profile");
 const session = require("./session");
 
+const { isUser } = require("../app/middlewares/session");
+
 const routes = express.Router();
 
 routes.use("/admin/users", users);
@@ -33,14 +35,24 @@ routes.get("/chefs/:index", chefs.show);
 /* === ADMIN ===*/
 
 /* RECIPES */
-routes.get("/admin/recipes", adminRecipes.index);
-routes.get("/admin/recipes/create", adminRecipes.create);
-routes.get("/admin/recipes/:id", adminRecipes.show);
-routes.get("/admin/recipes/:id/edit", adminRecipes.edit);
+routes.get("/admin/recipes", isUser, adminRecipes.index);
+routes.get("/admin/recipes/create", isUser, adminRecipes.create);
+routes.get("/admin/recipes/:id", isUser, adminRecipes.show);
+routes.get("/admin/recipes/:id/edit", isUser, adminRecipes.edit);
 
-routes.post("/admin/recipes", multer.array("photos", 5), adminRecipes.post);
-routes.put("/admin/recipes", multer.array("photos", 5), adminRecipes.put);
-routes.delete("/admin/recipes", adminRecipes.delete);
+routes.post(
+  "/admin/recipes",
+  isUser,
+  multer.array("photos", 5),
+  adminRecipes.post
+);
+routes.put(
+  "/admin/recipes",
+  isUser,
+  multer.array("photos", 5),
+  adminRecipes.put
+);
+routes.delete("/admin/recipes", isUser, adminRecipes.delete);
 
 /* CHEFS */
 routes.get("/admin/chefs", adminChefs.index);

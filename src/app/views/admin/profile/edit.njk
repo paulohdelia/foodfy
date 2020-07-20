@@ -8,11 +8,13 @@
   <section>
     <form action="/admin/profile/?_method=PUT" class="profile-form" method="POST">
       <div class="title-btn">
-        <h1>Bem vindo ...</h1>
+        <h1>Bem vindo
+          {{user.name}}</h1>
         <span>
           <button type="submit">Salvar</button>
         </span>
       </div>
+      <input type="hidden" name="id" value="{{req.session.id}}">
       <div class="profile-inputs">
         {% include 'admin/profile/fields.njk' %}
       </div>

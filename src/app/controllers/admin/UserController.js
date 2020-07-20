@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const { hash, genSalt, compare } = require("bcryptjs");
 
 module.exports = {
   async list(req, res) {
@@ -17,23 +18,7 @@ module.exports = {
     return res.render("admin/users/edit.njk", { user });
   },
   async post(req, res) {
-    const { name, email, is_adm = false } = req.body;
-
-    const keys = Object.keys(req.body);
-
-    for (key of keys) {
-      if (req.body[key] == "" && key != "is_adm") {
-        return res.send("Please, fill all fields!");
-      }
-    }
-
-    const user = await User.findOne({ where: { email } });
-    if (user) {
-      return res.render("admin/users/create.njk", {
-        user: req.body,
-        error: "Outro usuário já está utilizando este email.",
-      });
-    }
+    const { name, email, is_adm } = req.body;
 
     await User.create({ name, email, is_adm });
     return res.redirect(`/admin/users`);
@@ -57,7 +42,7 @@ module.exports = {
       });
     }
 
-    await User.update({ name, email, is_adm, id });
+    await User.update(id, { name, email, is_admin: is_adm });
     return res.redirect(`/admin/users`);
   },
   async delete(req, res) {

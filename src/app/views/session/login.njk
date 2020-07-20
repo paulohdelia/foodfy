@@ -9,7 +9,9 @@
   <form action="/session/login" class="session-form" method="POST">
     {% include 'session/fields.njk' %}
     <div class="space-between">
-      <span class="session-forgot-password">Perdeu a senha?</span>
+      <span class="session-forgot-password">
+        <a href="/session/forgot-password">Perdeu a senha?</a>
+      </span>
       <button type="submit">Acessar</button>
     </div>
   </form>

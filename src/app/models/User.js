@@ -1,17 +1,23 @@
 const db = require("../../config/db");
+const { hash, genSalt } = require("bcryptjs");
+const mailer = require("../../lib/mailer");
 
 module.exports = {
-  create({ name, email, is_adm }) {
+  async create({ name, email, is_adm, password }) {
     const query = `
             INSERT INTO users (
                 name,
                 email,
-                is_admin
-            ) VALUES ($1, $2, $3)
+                is_admin,
+                password
+            ) VALUES ($1, $2, $3, $4)
             RETURNING id
         `;
 
-    const values = [name, email, is_adm];
+    const tempPassword = await genSalt();
+    const passwordHash = await hash(tempPassword, 8);
+
+    const values = [name, email, is_adm, passwordHash];
 
     return db.query(query, values);
   },
@@ -49,12 +55,26 @@ module.exports = {
 
     return results.rows[0];
   },
-  update({ name, email, is_adm, id }) {
-    const query = `
-      UPDATE users SET name = $1, email = $2, is_admin = $3 WHERE id = $4 
-    `;
+  async update(id, fields) {
+    let query = "UPDATE users SET";
 
-    return db.query(query, [name, email, is_adm, id]);
+    Object.keys(fields).map((key, index, array) => {
+      if (index + 1 < array.length) {
+        query = `
+                ${query}
+                ${key} = '${fields[key]}',
+            `;
+      } else {
+        query = `
+                ${query}
+                ${key} = '${fields[key]}'
+                WHERE id = ${id}
+            `;
+      }
+    });
+
+    await db.query(query);
+    return;
   },
   delete({ id }) {
     const query = `

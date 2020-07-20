@@ -3,14 +3,13 @@ const routes = express.Router();
 
 const UserController = require("../app/controllers/admin/UserController");
 
-// Rotas que o administrador irá acessar para gerenciar usuários
 routes.get("/register", UserController.create);
-routes.post("/register", UserController.post); //Cadastrar um usuário
+routes.post("/register", UserController.post);
 
-routes.get("/", UserController.list); //Mostrar a lista de usuários cadastrados
+routes.get("/", UserController.list);
 
 routes.get("/:id", UserController.edit);
-routes.put("/edit", UserController.put); // Editar um usuário
-routes.delete("/", UserController.delete); // Deletar um usuário
+routes.put("/", UserController.put);
+routes.delete("/", UserController.delete);
 
 module.exports = routes;
