@@ -66,51 +66,81 @@ module.exports = {
     }
   },
   async put(req, res) {
-    const { name, email, is_admin = false, id } = req.body;
+    try {
+      const { name, email, is_admin = false, id } = req.body;
 
-    const keys = Object.keys(req.body);
+      const keys = Object.keys(req.body);
 
-    for (key of keys) {
-      if (req.body[key] == "" && key != "is_admin") {
-        return res.send("Please, fill all fields!");
+      for (key of keys) {
+        if (req.body[key] == "" && key != "is_admin") {
+          return res.render("admin/users/edit.njk", {
+            user: req.body,
+            error: "Por favor, preencha todos os campos",
+          });
+        }
       }
-    }
 
-    const user = await User.findOne({ where: { email } });
-    if (user && user.id != id) {
+      const user = await User.findOne({ where: { email } });
+      if (user && user.id != id) {
+        return res.render("admin/users/edit.njk", {
+          user: req.body,
+          error: "Outro usuário já está utilizando este email.",
+        });
+      }
+
+      await User.update(id, { name, email, is_admin: is_admin });
+
+      const results = await User.listAll();
+      const users = results.rows;
+
+      return res.render("admin/users/list.njk", {
+        users,
+        success: "Usuário editado com sucesso!",
+      });
+    } catch {
       return res.render("admin/users/edit.njk", {
         user: req.body,
-        error: "Outro usuário já está utilizando este email.",
+        error: "Erro inesperado, tente novamente!",
       });
     }
-
-    await User.update(id, { name, email, is_admin: is_admin });
-    return res.redirect(`/admin/users`);
   },
   async delete(req, res) {
-    const id = req.body.id;
+    try {
+      const id = req.body.id;
 
-    if (!req.session.userIsAdmin) {
+      if (!req.session.userIsAdmin) {
+        const results = await User.listAll();
+        const users = results.rows;
+        return res.render("admin/users/list.njk", {
+          users,
+          error:
+            "Apenas administradores podem excluir contas de outros usuários.",
+        });
+      }
+
+      if (req.session.userId == id) {
+        const results = await User.listAll();
+        const users = results.rows;
+        return res.render("admin/users/list.njk", {
+          users,
+          error: "Você não pode excluir a si mesmo!",
+        });
+      }
+
+      await User.delete({ id });
+
       const results = await User.listAll();
       const users = results.rows;
+
       return res.render("admin/users/list.njk", {
         users,
-        error:
-          "Apenas administradores podem excluir contas de outros usuários.",
+        success: "Usuário removido com sucesso!",
+      });
+    } catch {
+      return res.render("admin/users/edit.njk", {
+        user: req.body,
+        error: "Erro inesperado, tente novamente!",
       });
     }
-
-    if (req.session.userId == id) {
-      const results = await User.listAll();
-      const users = results.rows;
-      return res.render("admin/users/list.njk", {
-        users,
-        error: "Você não pode excluir a si mesmo!",
-      });
-    }
-
-    await User.delete({ id });
-
-    return res.redirect("/admin/users");
   },
 };

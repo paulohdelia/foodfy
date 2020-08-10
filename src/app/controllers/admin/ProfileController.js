@@ -7,7 +7,7 @@ module.exports = {
     return res.render("admin/profile/edit.njk", { user });
   },
   async put(req, res) {
-    const { name, email } = req.body;
+    const { name } = req.body;
     const id = req.session.userId;
 
     try {

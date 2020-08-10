@@ -6,7 +6,7 @@
 
 {% block content %}
     <section id="edit-section">
-        <h1>Editando receita</h1>
+        <h1>Editando chef</h1>
         <form class="delete-form" method="POST" action="/admin/chefs/?_method=DELETE">
             <button>Deletar</button>
             <input type="hidden" name="id" value="{{chef.id}}">

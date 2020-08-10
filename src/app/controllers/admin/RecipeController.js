@@ -86,94 +86,191 @@ module.exports = {
   },
   async post(req, res) {
     // Cadastrar nova receita
-    const keys = Object.keys(req.body);
+    try {
 
-    for (key of keys) {
-      if (req.body[key] == "" && key != "removed_files") {
-        return res.send("Please, fill all fields!");
+      const keys = Object.keys(req.body);
+
+      for (key of keys) {
+        if (req.body[key] == "" && key != "removed_files") {
+          const results = await Chef.getNames();
+          const chefs = results.rows;
+
+          return res.render("admin/recipe/create.njk", {
+            chefs,
+            recipe: req.body,
+            error: "Por favor, preecha todos os campos",
+          });
+        }
       }
-    }
 
-    if (req.files.length == 0) {
-      return res.send("Please, send at least one image");
-    }
+      if (req.files.length == 0) {
+        const results = await Chef.getNames();
+        const chefs = results.rows;
 
-    const userId = req.session.userId;
-    let results = await Recipe.create(req.body, { userId });
-    const recipeId = results.rows[0].id;
+        return res.render("admin/recipe/create.njk", {
+          recipe: req.body,
+          error: "Por favor, envia ao menos uma imagem",
+        });
+      }
 
-    const filePromise = req.files.map((file) => File.create({ ...file }));
-    results = await Promise.all(filePromise);
+      const userId = req.session.userId;
+      let results = await Recipe.create(req.body, { userId });
+      const recipeId = results.rows[0].id;
 
-    const recipeFilePromise = results.map((result) =>
-      Recipe.createOnRecipeFiles({
-        recipe_id: recipeId,
-        file_id: result.rows[0].id,
-      })
-    );
-    await Promise.all(recipeFilePromise);
-
-    return res.redirect(`/admin/recipes/${recipeId}`);
-  },
-  async put(req, res) {
-    // Editar uma receita
-    const id = req.body.id;
-
-    const results = await Recipe.find(id);
-    const recipe = results.rows[0];
-
-    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
-      const id = req.session.userId;
-      const user = await User.findOne({ where: { id } });
-      return res.render("admin/profile/edit.njk", {
-        user,
-        error: "Acesso negado!",
-      });
-    }
-
-    if (req.files.length > 0) {
-      const newFilesPromise = req.files.map((file) => File.create({ ...file }));
-      let results = await Promise.all(newFilesPromise);
+      const filePromise = req.files.map((file) => File.create({ ...file }));
+      results = await Promise.all(filePromise);
 
       const recipeFilePromise = results.map((result) =>
         Recipe.createOnRecipeFiles({
-          recipe_id: req.body.id,
+          recipe_id: recipeId,
           file_id: result.rows[0].id,
         })
       );
       await Promise.all(recipeFilePromise);
+
+      results = await Recipe.all({ orderBy: "created_at" });
+      let recipes = results.rows;
+
+      recipes = recipes.map((recipe) => ({
+        ...recipe,
+        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
+          "public",
+          ""
+        )}`,
+      }));
+
+      // users can see only their recipes but admins can see all
+      if (!req.session.userIsAdmin) {
+        recipes = recipes.filter(
+          (recipe) => recipe.user_id == req.session.userId
+        );
+      }
+      return res.render("admin/recipe/list", {
+        recipes,
+        success: "Nova receita criada com sucesso"
+      });
+    } catch {
+      return res.render("admin/recipe/create.njk", {
+        recipe: req.body,
+        error: "Erro inesperado, tente novamente.",
+      });
     }
+  },
+  async put(req, res) {
+    // Editar uma receita
+    try {
 
-    if (req.body.removed_files) {
-      const removedFiles = req.body.removed_files.split(",");
-      const lastIndex = removedFiles.length - 1;
-      removedFiles.splice(lastIndex, 1);
+      const id = req.body.id;
 
-      const removedFilesPromise = removedFiles.map((id) => File.delete(id));
-      await Promise.all(removedFilesPromise);
+      let results = await Recipe.find(id);
+      const recipe = results.rows[0];
+
+      if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+        const id = req.session.userId;
+        const user = await User.findOne({ where: { id } });
+        return res.render("admin/profile/edit.njk", {
+          user,
+          error: "Acesso negado!",
+        });
+      }
+
+      if (req.files.length > 0) {
+        const newFilesPromise = req.files.map((file) => File.create({ ...file }));
+        let results = await Promise.all(newFilesPromise);
+
+        const recipeFilePromise = results.map((result) =>
+          Recipe.createOnRecipeFiles({
+            recipe_id: req.body.id,
+            file_id: result.rows[0].id,
+          })
+        );
+        await Promise.all(recipeFilePromise);
+      }
+
+      if (req.body.removed_files) {
+        const removedFiles = req.body.removed_files.split(",");
+        const lastIndex = removedFiles.length - 1;
+        removedFiles.splice(lastIndex, 1);
+
+        const removedFilesPromise = removedFiles.map((id) => File.delete(id));
+        await Promise.all(removedFilesPromise);
+      }
+
+      await Recipe.update(req.body);
+
+      results = await Recipe.all({ orderBy: "created_at" });
+      let recipes = results.rows;
+
+      recipes = recipes.map((recipe) => ({
+        ...recipe,
+        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
+          "public",
+          ""
+        )}`,
+      }));
+
+      // users can see only their recipes but admins can see all
+      if (!req.session.userIsAdmin) {
+        recipes = recipes.filter(
+          (recipe) => recipe.user_id == req.session.userId
+        );
+      }
+      return res.render("admin/recipe/list", {
+        recipes,
+        success: "Receita editada com sucesso"
+      });
+    } catch {
+      return res.render("admin/recipe/create.njk", {
+        recipe: req.body,
+        error: "Erro inesperado, tente novamente.",
+      });
     }
-
-    await Recipe.update(req.body);
-
-    return res.redirect(`/admin/recipes/${req.body.id}`);
   },
   async delete(req, res) {
     // Deletar uma receita
-    const id = req.body.id;
+    try {
+      const id = req.body.id;
 
-    const results = await Recipe.find(id);
-    const recipe = results.rows[0];
+      let results = await Recipe.find(id);
+      const recipe = results.rows[0];
 
-    if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
-      const id = req.session.userId;
-      const user = await User.findOne({ where: { id } });
-      return res.render("admin/profile/edit.njk", {
-        user,
-        error: "Acesso negado!",
+      if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
+        const id = req.session.userId;
+        const user = await User.findOne({ where: { id } });
+        return res.render("admin/profile/edit.njk", {
+          user,
+          error: "Acesso negado!",
+        });
+      }
+      await Recipe.delete(id);
+
+      results = await Recipe.all({ orderBy: "created_at" });
+      let recipes = results.rows;
+
+      recipes = recipes.map((recipe) => ({
+        ...recipe,
+        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
+          "public",
+          ""
+        )}`,
+      }));
+
+      // users can see only their recipes but admins can see all
+      if (!req.session.userIsAdmin) {
+        recipes = recipes.filter(
+          (recipe) => recipe.user_id == req.session.userId
+        );
+      }
+      return res.render("admin/recipe/list", {
+        recipes,
+        success: "Receita removida com sucesso"
+      });
+    } catch (err) {
+      console.error(err)
+      return res.render("admin/recipe/edit.njk", {
+        recipe: req.body,
+        error: "Erro inesperado ao remover a receita. Por favor, tente novamente.",
       });
     }
-    Recipe.delete(id);
-
-    return res.redirect(`/admin/recipes`);
   },
 };
