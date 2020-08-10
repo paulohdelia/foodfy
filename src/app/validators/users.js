@@ -55,13 +55,16 @@ async function update(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
   if (fillAllFields) {
-    return res.render("user/index", fillAllFields);
+    return res.render("admin/profile/edit.njk", {
+      user: req.body,
+      error: "Preencha todos os campos.",
+    });
   }
 
   const { id, password } = req.body;
 
   if (!password) {
-    return res.render("user/index", {
+    return res.render("admin/profile/edit.njk", {
       user: req.body,
       error: "Coloque sua senha para atualizar seu cadastro.",
     });
@@ -72,7 +75,7 @@ async function update(req, res, next) {
   const passed = await compare(password, user.password);
 
   if (!passed) {
-    return res.render("user/index", {
+    return res.render("admin/profile/edit.njk", {
       user: req.body,
       error: "Senha incorreta.",
     });

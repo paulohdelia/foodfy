@@ -10,7 +10,19 @@ module.exports = {
     const { name, email } = req.body;
     const id = req.session.userId;
 
-    await User.update(id, { name, email });
+    try {
+      await User.update(id, { name });
+
+      return res.render("admin/profile/edit.njk", {
+        user: req.body,
+        success: "Perfil atualizado com sucesso.",
+      });
+    } catch {
+      return res.render("admin/profile/edit.njk", {
+        user: req.body,
+        error: "Erro inesperado ao atualizar o perfil. Por favor, tente novamente.",
+      });
+    }
 
     return res.redirect("/admin/profile");
   },
