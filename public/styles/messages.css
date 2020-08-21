@@ -21,7 +21,7 @@
   border-radius: 4px;
 
 
-  animation: hidemessage 400ms 5s ease-out forwards;
+  animation: hidemessage 400ms 3s ease-out forwards;
 }
 
 .messages.error {
