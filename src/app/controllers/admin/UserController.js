@@ -90,17 +90,9 @@ module.exports = {
     try {
       const id = req.body.id;
 
-      if (req.session.userId == id) {
-        const users = await User.findAll();
-        return res.render("admin/users/list.njk", {
-          users,
-          error: "Você não pode excluir a si mesmo!",
-        });
-      }
-
       await User.delete(id);
-      const users = await User.findAll();
 
+      const users = await User.findAll();
       return res.render("admin/users/list.njk", {
         users,
         success: "Usuário removido com sucesso!",

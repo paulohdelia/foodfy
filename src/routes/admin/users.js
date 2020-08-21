@@ -12,6 +12,6 @@ routes.get('/', UserController.list);
 
 routes.get('/:id', UserController.edit);
 routes.put('/', UserValidator.put, UserController.put);
-routes.delete('/', UserController.delete);
+routes.delete('/', UserValidator.deleteOne, UserController.delete);
 
 module.exports = routes;

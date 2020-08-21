@@ -49,7 +49,24 @@ async function put(req, res, next) {
   next();
 }
 
+// I can't name it to "delete"
+async function deleteOne(req, res, next) {
+  const id = req.body.id;
+
+  if (req.session.userId == id) {
+    const users = await User.findAll();
+
+    return res.render("admin/users/list.njk", {
+      users,
+      error: "Você não pode excluir a si mesmo!",
+    });
+  }
+
+  next();
+}
+
 module.exports = {
   post,
   put,
+  deleteOne,
 }
