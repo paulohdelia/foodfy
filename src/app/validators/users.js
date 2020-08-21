@@ -1,18 +1,36 @@
 const User = require('../models/User');
 
-async function put(req, res, next) {
-  const keys = Object.keys(req.body);
+function checkAllFields(body) {
+  const keys = Object.keys(body);
 
   for (key of keys) {
-    if (req.body[key] == "" && key != "is_admin") {
-      return res.render("admin/users/edit.njk", {
+    if (body[key] == "" && key != "is_admin") {
+      return {
         user: {
-          ...req.body,
-          is_admin: Boolean(req.body.is_admin)
+          ...body,
+          is_admin: Boolean(body.is_admin)
         },
         error: "Por favor, preencha todos os campos",
-      });
+      };
     }
+  }
+}
+
+async function post(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
+
+  if (fillAllFields) {
+    return res.render("admin/users/create.njk", fillAllFields);
+  }
+
+  next();
+}
+
+async function put(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
+
+  if (fillAllFields) {
+    return res.render("admin/users/edit.njk", fillAllFields);
   }
 
   const user = await User.findOne({ where: { email: req.body.email } });
@@ -32,5 +50,6 @@ async function put(req, res, next) {
 }
 
 module.exports = {
+  post,
   put,
 }

@@ -57,7 +57,9 @@ module.exports = {
       `,
       });
 
-      return res.render("admin/users/create.njk", {
+      const users = await User.findAll();
+      return res.render("admin/users/list.njk", {
+        users,
         success: "Usuário criado com sucesso!",
       });
     } catch (err) {
@@ -72,7 +74,6 @@ module.exports = {
       const { name, email, is_admin = false, id } = req.body;
 
       await User.update(id, { name, email, is_admin: is_admin });
-
       const users = await User.findAll();
       return res.render("admin/users/list.njk", {
         users,

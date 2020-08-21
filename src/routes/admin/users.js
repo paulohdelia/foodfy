@@ -6,7 +6,7 @@ const UserController = require('../../app/controllers/admin/UserController');
 const UserValidator = require('../../app/validators/users');
 
 routes.get('/register', UserController.create);
-routes.post('/register', UserController.post);
+routes.post('/register', UserValidator.post, UserController.post);
 
 routes.get('/', UserController.list);
 
