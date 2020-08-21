@@ -1,17 +1,17 @@
-const express = require("express");
+const express = require('express');
 
 const routes = express.Router();
 
-const UserController = require("../../app/controllers/admin/UserController");
-const { isAdmin } = require("../../app/middlewares/permission");
+const UserController = require('../../app/controllers/admin/UserController');
+const UserValidator = require('../../app/validators/users');
 
-routes.get("/register", isAdmin, UserController.create);
-routes.post("/register", isAdmin, UserController.post);
+routes.get('/register', UserController.create);
+routes.post('/register', UserController.post);
 
-routes.get("/", isAdmin, UserController.list);
+routes.get('/', UserController.list);
 
-routes.get("/:id", isAdmin, UserController.edit);
-routes.put("/", UserController.put);
-routes.delete("/", isAdmin, UserController.delete);
+routes.get('/:id', UserController.edit);
+routes.put('/', UserValidator.put, UserController.put);
+routes.delete('/', UserController.delete);
 
 module.exports = routes;

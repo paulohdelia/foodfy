@@ -1,93 +1,36 @@
-const User = require("../models/User");
-const { compare } = require("bcryptjs");
+const User = require('../models/User');
 
-function checkAllFields(body) {
-  const keys = Object.keys(body);
-
-  for (key of keys) {
-    if (body[key] == "") {
-      return {
-        user: body,
-        error: "Por favor, preencha todos os campos.",
-      };
-    }
-  }
-}
-
-async function post(req, res, next) {
+async function put(req, res, next) {
   const keys = Object.keys(req.body);
 
   for (key of keys) {
     if (req.body[key] == "" && key != "is_admin") {
-      return res.send("Please, fill all fields!");
+      return res.render("admin/users/edit.njk", {
+        user: {
+          ...req.body,
+          is_admin: Boolean(req.body.is_admin)
+        },
+        error: "Por favor, preencha todos os campos",
+      });
     }
   }
 
-  const { email } = req.body;
-
-  const user = await User.findOne({ where: { email } });
-  if (user) {
-    return res.render("admin/users/create.njk", {
-      user: req.body,
-      error: "Email já cadastrado",
+  const user = await User.findOne({ where: { email: req.body.email } });
+  // Existe um usuário?
+  // Se sim, então o id dele é igual o do usuário atual?
+  if (user && user.id != req.body.id) {
+    return res.render("admin/users/edit.njk", {
+      user: {
+        ...req.body,
+        is_admin: Boolean(req.body.is_admin)
+      },
+      error: "Outro usuário já está utilizando este email.",
     });
   }
-  next();
-}
-
-async function show(req, res, next) {
-  const { userId: id } = req.session;
-
-  const user = await User.findOne({ where: { id } });
-
-  if (!user) {
-    return res.render("user/register", {
-      error: "Usuário não encontrado!",
-    });
-  }
-
-  req.user = user;
-
-  next();
-}
-
-async function update(req, res, next) {
-  const fillAllFields = checkAllFields(req.body);
-
-  if (fillAllFields) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Preencha todos os campos.",
-    });
-  }
-
-  const { id, password } = req.body;
-
-  if (!password) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Coloque sua senha para atualizar seu cadastro.",
-    });
-  }
-
-  const user = await User.findOne({ where: { id } });
-
-  const passed = await compare(password, user.password);
-
-  if (!passed) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Senha incorreta.",
-    });
-  }
-
-  req.user = user;
 
   next();
 }
 
 module.exports = {
-  post,
-  show,
-  update,
-};
+  put,
+}
