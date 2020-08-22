@@ -1,3 +1,5 @@
+const { unlinkSync } = require('fs');
+
 const Chef = require('../../models/Chef');
 const File = require('../../models/File');
 
@@ -43,40 +45,20 @@ module.exports = {
     },
     async post(req, res) {
         try {
-            const keys = Object.keys(req.body);
-
-            for (key of keys) {
-                if (req.body[key] == "" && key != "old_file_id") {
-                    return res.render("admin/chef/create.njk", {
-                        chef: req.body,
-                        error: "Por favor, preecha todos os campos",
-                    });
-                }
-            }
-
-            if (req.files.length == 0 && key != "removed_files") {
-                return res.render("admin/chef/create.njk", {
-                    chef: req.body,
-                    error: "Por favor, envie ao menos uma imagem",
-                });
-            }
-
             const { filename, path } = req.files[0];
 
-            let results = await File.create({ filename, path });
-            const file_id = results.rows[0].id;
+            let file_id = await File.create({ name: filename, path });
 
             const { name } = req.body;
 
             await Chef.create({ name, file_id })
 
-            results = await Chef.all({})
-            let chefs = results.rows;
+            let chefs = await Chef.findAll();
 
-            chefs = chefs.map(chef => ({
-                ...chef,
-                src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-            }));
+            // chefs = chefs.map(chef => ({
+            //     ...chef,
+            //     src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
+            // }));
 
             return res.render("admin/chef/list.njk", {
                 chefs,
@@ -93,34 +75,15 @@ module.exports = {
     },
     async put(req, res) {
         try {
-            const keys = Object.keys(req.body);
-
-            for (key of keys) {
-                if (req.body[key] == "" && key != "removed_files" && key != "old_file_id") {
-                    return res.render("admin/chef/edit.njk", {
-                        chef: req.body,
-                        error: "Por favor, preecha todos os campos.",
-                    });
-                }
-            }
-
-            if (req.files.length == 0 && req.body.removed_files) {
-                return res.render("admin/chef/edit.njk", {
-                    chef: req.body,
-                    error: "Por favor, envie ao menos uma imagem",
-                });
-            }
-
             let file_id = req.body.old_file_id;
 
             if (req.files[0]) {
                 const { filename, path } = req.files[0];
 
-                let results = await File.create({ filename, path });
-                file_id = results.rows[0].id;
+                file_id = await File.create({ name: filename, path });
             }
 
-            await Chef.update({ name: req.body.name, file_id, id: req.body.id })
+            await Chef.update(req.body.id, { name: req.body.name, file_id })
 
             if (req.body.removed_files) {
                 const removedFiles = req.body.removed_files.split(',');
@@ -131,14 +94,15 @@ module.exports = {
                 await Promise.all(removedFilesPromise);
             }
 
-            const results = await Chef.all({})
-            let chefs = results.rows;
+            // const results = await Chef.all({})
+            // let chefs = results.rows;
 
-            chefs = chefs.map(chef => ({
-                ...chef,
-                src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-            }));
+            // chefs = chefs.map(chef => ({
+            //     ...chef,
+            //     src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
+            // }));
 
+            const chefs = Chef.findAll();
             return res.render("admin/chef/list.njk", {
                 chefs,
                 user: req.body,
@@ -153,20 +117,26 @@ module.exports = {
     },
     async delete(req, res) {
         try {
-            await Chef.delete(req.body.id)
+            const chef_id = req.body.id;
 
-            const results = await Chef.all({})
-            let chefs = results.rows;
+            const file = await Chef.file(chef_id);
 
-            chefs = chefs.map(chef => ({
-                ...chef,
-                src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-            }));
+            try {
+                unlinkSync(file.path);
+            } catch (err) {
+                console.error(err);
+            }
+
+            await Chef.delete(chef_id);
+            await File.delete(file.id)
+
+            const chefs = await Chef.findAll();
             return res.render("admin/chef/list", {
                 chefs,
                 success: "Chef removido com sucesso",
             });
-        } catch {
+        } catch (error) {
+            console.error(error);
             return res.render("admin/chef/edit.njk", {
                 chef: req.body,
                 error: "Erro inesperado ao remover um chef. Por favor, tente novamente.",

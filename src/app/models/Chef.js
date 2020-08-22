@@ -3,8 +3,13 @@ const { date } = require('../../lib/utils')
 const File = require('../models/File')
 const Recipe = require('../models/Recipe')
 
+const Base = require('./Base');
+Base.init({ table: 'chefs' });
+
+
 module.exports = {
-    all({filter = ''}) {
+    ...Base,
+    all({ filter = '' }) {
         const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
@@ -32,22 +37,6 @@ module.exports = {
             name,
             file_id,
             date(Date.now()).iso
-        ]
-
-        return db.query(query, values);
-    },
-    update({ name, file_id, id }) {
-        const query = `
-            UPDATE chefs SET
-                name=($1),
-                file_id=($2)
-            WHERE id = $3
-        `
-
-        const values = [
-            name,
-            file_id,
-            id
         ]
 
         return db.query(query, values);
@@ -86,18 +75,26 @@ module.exports = {
     getNames() {
         return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
     },
-    async delete(id) {
-        let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
+    async file(id) {
+        let results = await db.query('SELECT file_id FROM chefs WHERE id = $1', [id])
         const file_id = results.rows[0].file_id;
 
-        await File.delete(file_id);
+        results = await db.query('SELECT * FROM files WHERE id = $1', [file_id])
+        return results.rows[0];
+        ;
+    }
+    // async delete(id) {
+    //     let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
+    //     const file_id = results.rows[0].file_id;
 
-        results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
-        const recipes = results.rows;
+    //     await File.delete(file_id);
 
-        const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
-        await Promise.all(removedRecipes);
-        
-        return
-    },
+    //     results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
+    //     const recipes = results.rows;
+
+    //     const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
+    //     await Promise.all(removedRecipes);
+
+    //     return
+    // },
 }
