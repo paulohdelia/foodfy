@@ -1,33 +1,15 @@
-CREATE TABLE "chefs" (
-  "id" SERIAL PRIMARY KEY,
-  "name" text NOT NULL,
-  "created_at" timestamp DEFAULT NOW(),
-  "updated_at" timestamp DEFAULT NOW(),
-  "file_id" int
-);
-
 CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
-  "name" text,
-  "path" text NOT NULL
+  "name" TEXT,
+  "path" TEXT NOT NULL
 );
 
-CREATE TABLE "recipe_files" (
+CREATE TABLE "chefs" (
   "id" SERIAL PRIMARY KEY,
-  "recipe_id" int NOT NULL,
-  "file_id" int NOT NULL
-);
-
-CREATE TABLE "recipes" (
-  "id" SERIAL PRIMARY KEY,
-  "title" text NOT NULL,
-  "ingredients" text[] NOT NULL,
-  "preparation" text[] NOT NULL,
-  "information" text NOT NULL,
-  "created_at" timestamp DEFAULT NOW(),
-  "updated_at" timestamp DEFAULT NOW(),
-  "chef_id" int NOT NULL,
-  "user_id" int NOT NULL
+  "name" TEXT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW(),
+  "updated_at" TIMESTAMP DEFAULT NOW(),
+  "file_id" INT REFERENCES files(id)
 );
 
 CREATE TABLE "users" (
@@ -42,6 +24,42 @@ CREATE TABLE "users" (
   "updated_at" timestamp DEFAULT NOW()
 );
 
+-- If chef or user get deleted, recipe is deleted as well
+CREATE TABLE "recipes" (
+  "id" SERIAL PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "ingredients" TEXT[] NOT NULL,
+  "preparation" TEXT[] NOT NULL,
+  "information" TEXT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW(),
+  "updated_at" TIMESTAMP DEFAULT NOW(),
+  
+  "chef_id" INT NOT NULL
+    REFERENCES chefs(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  
+  "user_id" INT NOT NULL
+    REFERENCES users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+CREATE TABLE "recipe_files" (
+  "id" SERIAL PRIMARY KEY,
+
+  "recipe_id" INT NOT NULL 
+    REFERENCES recipes(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  "file_id" INT NOT NULL
+    REFERENCES files(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 CREATE TABLE "session" (
   "sid" varchar NOT NULL COLLATE "default",
   "sess" json NOT NULL,
@@ -53,13 +71,13 @@ ADD CONSTRAINT "session_pkey"
 PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- FOREIGN KEY
-ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
-
-ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
-ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
-
-ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
-ALTER TABLE "recipes" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+-- ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
+-- 
+-- ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
+-- ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
+-- 
+-- ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
+-- ALTER TABLE "recipes" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 -- CREATE PROCEDURE
 CREATE FUNCTION trigger_set_timestamp()

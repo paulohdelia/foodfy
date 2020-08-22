@@ -2,9 +2,9 @@ const express = require("express");
 const routes = express.Router();
 
 const ProfileController = require("../../app/controllers/admin/ProfileController");
-const UserValidator = require("../../app/validators/users");
+const ProfileValidator = require("../../app/validators/profile");
 
-routes.get("/", UserValidator.show, ProfileController.index);
-routes.put("/", UserValidator.update, ProfileController.put);
+routes.get("/", ProfileValidator.show, ProfileController.index);
+routes.put("/", ProfileValidator.update, ProfileController.put);
 
 module.exports = routes;

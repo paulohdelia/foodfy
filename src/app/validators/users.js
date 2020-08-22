@@ -1,93 +1,72 @@
-const User = require("../models/User");
-const { compare } = require("bcryptjs");
+const User = require('../models/User');
 
 function checkAllFields(body) {
   const keys = Object.keys(body);
 
   for (key of keys) {
-    if (body[key] == "") {
+    if (body[key] == "" && key != "is_admin") {
       return {
-        user: body,
-        error: "Por favor, preencha todos os campos.",
+        user: {
+          ...body,
+          is_admin: Boolean(body.is_admin)
+        },
+        error: "Por favor, preencha todos os campos",
       };
     }
   }
 }
 
 async function post(req, res, next) {
-  const keys = Object.keys(req.body);
-
-  for (key of keys) {
-    if (req.body[key] == "" && key != "is_admin") {
-      return res.send("Please, fill all fields!");
-    }
-  }
-
-  const { email } = req.body;
-
-  const user = await User.findOne({ where: { email } });
-  if (user) {
-    return res.render("admin/users/create.njk", {
-      user: req.body,
-      error: "Email já cadastrado",
-    });
-  }
-  next();
-}
-
-async function show(req, res, next) {
-  const { userId: id } = req.session;
-
-  const user = await User.findOne({ where: { id } });
-
-  if (!user) {
-    return res.render("user/register", {
-      error: "Usuário não encontrado!",
-    });
-  }
-
-  req.user = user;
-
-  next();
-}
-
-async function update(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
   if (fillAllFields) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Preencha todos os campos.",
+    return res.render("admin/users/create.njk", fillAllFields);
+  }
+
+  next();
+}
+
+async function put(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
+
+  if (fillAllFields) {
+    return res.render("admin/users/edit.njk", fillAllFields);
+  }
+
+  const user = await User.findOne({ where: { email: req.body.email } });
+  // Existe um usuário?
+  // Se sim, então o id dele é igual o do usuário atual?
+  if (user && user.id != req.body.id) {
+    return res.render("admin/users/edit.njk", {
+      user: {
+        ...req.body,
+        is_admin: Boolean(req.body.is_admin)
+      },
+      error: "Outro usuário já está utilizando este email.",
     });
   }
 
-  const { id, password } = req.body;
+  next();
+}
 
-  if (!password) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Coloque sua senha para atualizar seu cadastro.",
+// I can't name it to "delete"
+async function deleteOne(req, res, next) {
+  const id = req.body.id;
+
+  if (req.session.userId == id) {
+    const users = await User.findAll();
+
+    return res.render("admin/users/list.njk", {
+      users,
+      error: "Você não pode excluir a si mesmo!",
     });
   }
-
-  const user = await User.findOne({ where: { id } });
-
-  const passed = await compare(password, user.password);
-
-  if (!passed) {
-    return res.render("admin/profile/edit.njk", {
-      user: req.body,
-      error: "Senha incorreta.",
-    });
-  }
-
-  req.user = user;
 
   next();
 }
 
 module.exports = {
   post,
-  show,
-  update,
-};
+  put,
+  deleteOne,
+}
