@@ -117,13 +117,16 @@ module.exports = {
       let results = await Recipe.create(req.body, { userId });
       const recipeId = results.rows[0].id;
 
-      const filePromise = req.files.map((file) => File.create({ ...file }));
-      results = await Promise.all(filePromise);
+      const filePromise = req.files.map((file) => {
+        const { filename, path } = file;
+        return File.create({ name: filename, path });
+      })
+      const files_id = await Promise.all(filePromise);
 
-      const recipeFilePromise = results.map((result) =>
+      const recipeFilePromise = files_id.map((file_id) =>
         Recipe.createOnRecipeFiles({
           recipe_id: recipeId,
-          file_id: result.rows[0].id,
+          file_id: file_id,
         })
       );
       await Promise.all(recipeFilePromise);
@@ -149,7 +152,8 @@ module.exports = {
         recipes,
         success: "Nova receita criada com sucesso"
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
       return res.render("admin/recipe/create.njk", {
         recipe: req.body,
         error: "Erro inesperado, tente novamente.",

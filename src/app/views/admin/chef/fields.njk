@@ -5,11 +5,11 @@
 
 <div class="item">
     <h2>Avatar</h2>
-    {% if image %}
+    {% if chef.src %}
         <div id="avatar-preview" class="on">
             <input type="hidden" name="removed_files">
-            <div class="photo" id="{{image.id}}">
-                <img src="{{image.src}}" alt="{{chef.name}}">
+            <div class="photo" id="{{chef.file_id}}">
+                <img src="{{chef.src}}" alt="{{chef.name}}">
                 <i class="material-icons" onclick="AvatarUpload.removeOldPhoto(event)">
                     close
                 </i>
@@ -26,5 +26,5 @@
                 ">
         </div>
         
-        <input type="hidden" name="old_file_id" value={{image.id}}>
+        <input type="hidden" name="old_file_id" value={{chef.file_id}}>
     </div>

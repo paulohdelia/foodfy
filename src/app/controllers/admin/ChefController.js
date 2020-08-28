@@ -2,46 +2,26 @@ const { unlinkSync } = require('fs');
 
 const Chef = require('../../models/Chef');
 const File = require('../../models/File');
+const LoadServiceChefs = require('../../services/LoadChefs');
 
 module.exports = {
     async index(req, res) {
-        const results = await Chef.all({})
-        let chefs = results.rows;
-
-        chefs = chefs.map(chef => ({
-            ...chef,
-            src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-        }));
+        const chefs = await LoadServiceChefs.load('chefs')
         return res.render("admin/chef/list", { chefs });
     },
     create(req, res) {
         return res.render("admin/chef/create")
     },
     async show(req, res) {
-        let results = await Chef.find(req.params.id);
-
-        let chef = results.rows[0];
-        chef.src = `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`;
-
-        results = await Chef.getRecipes(req.params.id);
-        let recipes = results.rows;
-        recipes = recipes.map(recipe => ({
-            ...recipe,
-            src: `${req.protocol}://${req.headers.host}${recipe.path.replace('public', '')}`
-        }));
+        const chef_id = req.params.id;
+        const chef = await LoadServiceChefs.load('chef', chef_id);
+        const recipes = await LoadServiceChefs.load('recipes', chef_id);
 
         return res.render("admin/chef/detail", { chef, recipes })
     },
     async edit(req, res) {
-
-        let results = await Chef.find(req.params.id);
-        const chef = results.rows[0];
-
-        results = await Chef.getAvatar(req.params.id);
-        let image = results.rows[0];
-        image.src = `${req.protocol}://${req.headers.host}${image.path.replace('public', '')}`
-
-        return res.render("admin/chef/edit", { chef, image })
+        const chef = await LoadServiceChefs.load('chef', req.params.id);
+        return res.render("admin/chef/edit", { chef })
     },
     async post(req, res) {
         try {
@@ -49,17 +29,9 @@ module.exports = {
 
             let file_id = await File.create({ name: filename, path });
 
-            const { name } = req.body;
+            await Chef.create({ name: req.body.name, file_id })
 
-            await Chef.create({ name, file_id })
-
-            let chefs = await Chef.findAll();
-
-            // chefs = chefs.map(chef => ({
-            //     ...chef,
-            //     src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-            // }));
-
+            const chefs = await LoadServiceChefs.load('chefs');
             return res.render("admin/chef/list.njk", {
                 chefs,
                 success: "Novo chef criado com sucesso!",
@@ -70,8 +42,6 @@ module.exports = {
                 error: "Erro inesperado ao criar um chef. Por favor, tente novamente.",
             });
         }
-
-
     },
     async put(req, res) {
         try {
@@ -94,18 +64,9 @@ module.exports = {
                 await Promise.all(removedFilesPromise);
             }
 
-            // const results = await Chef.all({})
-            // let chefs = results.rows;
-
-            // chefs = chefs.map(chef => ({
-            //     ...chef,
-            //     src: `${req.protocol}://${req.headers.host}${chef.path.replace('public', '')}`
-            // }));
-
-            const chefs = Chef.findAll();
+            const chefs = await LoadServiceChefs.load('chefs')
             return res.render("admin/chef/list.njk", {
                 chefs,
-                user: req.body,
                 success: "Chef editado com sucesso!",
             });
         } catch {

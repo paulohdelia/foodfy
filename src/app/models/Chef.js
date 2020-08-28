@@ -1,7 +1,4 @@
 const db = require('../../config/db');
-const { date } = require('../../lib/utils')
-const File = require('../models/File')
-const Recipe = require('../models/Recipe')
 
 const Base = require('./Base');
 Base.init({ table: 'chefs' });
@@ -9,39 +6,7 @@ Base.init({ table: 'chefs' });
 
 module.exports = {
     ...Base,
-    all({ filter = '' }) {
-        const query = `
-        SELECT chefs.*, files.path, count.total_recipes
-        FROM chefs
-        LEFT JOIN files ON files.id = chefs.file_id
-        LEFT JOIN ( 
-            SELECT COUNT(chefs.id = recipes.chef_id) as total_recipes, chefs.id as chef_id
-            FROM chefs LEFT JOIN recipes ON(chefs.id = recipes.chef_id)
-                GROUP BY chefs.id
-        ) as COUNT ON chefs.id = count.chef_id
-        WHERE chefs.name ILIKE '%${filter}%'
-        `
-        return db.query(query);
-    },
-    create({ name, file_id }) { //#
-        const query = `
-            INSERT INTO chefs (
-                name,
-                file_id,
-                created_at
-            ) VALUES ($1, $2, $3)
-            RETURNING id
-        `
-
-        const values = [
-            name,
-            file_id,
-            date(Date.now()).iso
-        ]
-
-        return db.query(query, values);
-    },
-    find(id) {
+    async findOne(id) {
         const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
@@ -53,13 +18,26 @@ module.exports = {
         ) as COUNT ON chefs.id = count.chef_id
         WHERE chef_id = $1
         `
-        return db.query(query, [id]);
+        const results = await db.query(query, [id]);
+        return results.rows[0];
     },
-    getAvatar(id) {
-        return db.query('SELECT * FROM chefs LEFT JOIN files ON (chefs.file_id = files.id) WHERE chefs.id = $1', [id])
+    async findAll({ filter = '' }) {
+        const query = `
+        SELECT chefs.*, files.path, count.total_recipes
+        FROM chefs
+        LEFT JOIN files ON files.id = chefs.file_id
+        LEFT JOIN ( 
+            SELECT COUNT(chefs.id = recipes.chef_id) as total_recipes, chefs.id as chef_id
+            FROM chefs LEFT JOIN recipes ON(chefs.id = recipes.chef_id)
+                GROUP BY chefs.id
+        ) as COUNT ON chefs.id = count.chef_id
+        WHERE chefs.name ILIKE '%${filter}%'
+        `
+        const results = await db.query(query)
+        return results.rows;
     },
-    getRecipes(id) {
-        return db.query(`
+    async recipes(id) {
+        const results = await db.query(`
         SELECT * FROM (
             SELECT DISTINCT ON (recipes.id) 
             recipes.id, recipes.title, recipes.created_at,
@@ -71,6 +49,7 @@ module.exports = {
             WHERE chefs.id = $1 ) results
           ORDER BY created_at DESC       
         `, [id])
+        return results.rows;
     },
     getNames() {
         return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
