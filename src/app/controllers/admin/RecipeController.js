@@ -87,7 +87,6 @@ module.exports = {
   async post(req, res) {
     // Cadastrar nova receita
     try {
-
       const keys = Object.keys(req.body);
 
       for (key of keys) {
@@ -104,9 +103,6 @@ module.exports = {
       }
 
       if (req.files.length == 0) {
-        const results = await Chef.getNames();
-        const chefs = results.rows;
-
         return res.render("admin/recipe/create.njk", {
           recipe: req.body,
           error: "Por favor, envia ao menos uma imagem",
@@ -120,7 +116,7 @@ module.exports = {
       const filePromise = req.files.map((file) => {
         const { filename, path } = file;
         return File.create({ name: filename, path });
-      })
+      });
       const files_id = await Promise.all(filePromise);
 
       const recipeFilePromise = files_id.map((file_id) =>
@@ -150,7 +146,7 @@ module.exports = {
       }
       return res.render("admin/recipe/list", {
         recipes,
-        success: "Nova receita criada com sucesso"
+        success: "Nova receita criada com sucesso",
       });
     } catch (error) {
       console.error(error);
@@ -163,7 +159,6 @@ module.exports = {
   async put(req, res) {
     // Editar uma receita
     try {
-
       const id = req.body.id;
 
       let results = await Recipe.find(id);
@@ -179,7 +174,9 @@ module.exports = {
       }
 
       if (req.files.length > 0) {
-        const newFilesPromise = req.files.map((file) => File.create({ ...file }));
+        const newFilesPromise = req.files.map((file) =>
+          File.create({ ...file })
+        );
         let results = await Promise.all(newFilesPromise);
 
         const recipeFilePromise = results.map((result) =>
@@ -221,7 +218,7 @@ module.exports = {
       }
       return res.render("admin/recipe/list", {
         recipes,
-        success: "Receita editada com sucesso"
+        success: "Receita editada com sucesso",
       });
     } catch {
       return res.render("admin/recipe/create.njk", {
@@ -267,13 +264,14 @@ module.exports = {
       }
       return res.render("admin/recipe/list", {
         recipes,
-        success: "Receita removida com sucesso"
+        success: "Receita removida com sucesso",
       });
     } catch (err) {
-      console.error(err)
+      console.error(err);
       return res.render("admin/recipe/edit.njk", {
         recipe: req.body,
-        error: "Erro inesperado ao remover a receita. Por favor, tente novamente.",
+        error:
+          "Erro inesperado ao remover a receita. Por favor, tente novamente.",
       });
     }
   },
