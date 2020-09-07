@@ -1,10 +1,10 @@
 const express = require("express");
 
-const RecipeController = require("../../app/controllers/main/recipes");
+const RecipeController = require("../../app/controllers/main/RecipeController");
 
 const routes = express.Router();
 
 routes.get("/", RecipeController.list);
-routes.get("/:index", RecipeController.recipe);
+routes.get("/:id", RecipeController.recipe);
 
 module.exports = routes;

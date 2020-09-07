@@ -2,7 +2,7 @@ const express = require("express");
 
 const routes = express.Router();
 
-const RecipeController = require("../../app/controllers/main/recipes");
+const RecipeController = require("../../app/controllers/main/RecipeController");
 const chefs = require("./chefs");
 const recipes = require("./recipes");
 
