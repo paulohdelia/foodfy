@@ -1,8 +1,11 @@
 const db = require("../../config/db");
-const { date } = require("../../lib/utils");
 const File = require("../models/File");
 
+const Base = require("./Base");
+Base.init({ table: "recipes" });
+
 module.exports = {
+  ...Base,
   all({ filter = "", orderBy = "created_at", limit = null }) {
     return db.query(`
         SELECT * FROM (
@@ -36,29 +39,6 @@ module.exports = {
         `;
 
     return db.query(query);
-  },
-  create(data, { userId }) {
-    const query = `
-                INSERT INTO recipes (
-                    chef_id,
-                    title,
-                    ingredients,
-                    preparation,
-                    information,
-                    user_id
-                ) VALUES ($1, $2, $3, $4, $5, $6)
-                RETURNING id
-            `;
-
-    const values = [
-      data.chef_id,
-      data.title,
-      data.ingredients,
-      data.preparation,
-      data.information,
-      userId,
-    ];
-    return db.query(query, values);
   },
   createOnRecipeFiles({ recipe_id, file_id }) {
     const query = `

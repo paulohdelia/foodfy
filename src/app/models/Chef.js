@@ -1,13 +1,12 @@
-const db = require('../../config/db');
+const db = require("../../config/db");
 
-const Base = require('./Base');
-Base.init({ table: 'chefs' });
-
+const Base = require("./Base");
+Base.init({ table: "chefs" });
 
 module.exports = {
-    ...Base,
-    async findOne(id) {
-        const query = `
+  ...Base,
+  async findOne(id) {
+    const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
         LEFT JOIN files ON files.id = chefs.file_id
@@ -17,12 +16,12 @@ module.exports = {
                 GROUP BY chefs.id
         ) as COUNT ON chefs.id = count.chef_id
         WHERE chef_id = $1
-        `
-        const results = await db.query(query, [id]);
-        return results.rows[0];
-    },
-    async findAll({ filter = '' }) {
-        const query = `
+        `;
+    const results = await db.query(query, [id]);
+    return results.rows[0];
+  },
+  async findAll({ filter = "" }) {
+    const query = `
         SELECT chefs.*, files.path, count.total_recipes
         FROM chefs
         LEFT JOIN files ON files.id = chefs.file_id
@@ -32,12 +31,13 @@ module.exports = {
                 GROUP BY chefs.id
         ) as COUNT ON chefs.id = count.chef_id
         WHERE chefs.name ILIKE '%${filter}%'
-        `
-        const results = await db.query(query)
-        return results.rows;
-    },
-    async recipes(id) {
-        const results = await db.query(`
+        `;
+    const results = await db.query(query);
+    return results.rows;
+  },
+  async recipes(id) {
+    const results = await db.query(
+      `
         SELECT * FROM (
             SELECT DISTINCT ON (recipes.id) 
             recipes.id, recipes.title, recipes.created_at,
@@ -48,32 +48,35 @@ module.exports = {
             LEFT JOIN files ON (recipe_files.file_id = files.id)
             WHERE chefs.id = $1 ) results
           ORDER BY created_at DESC       
-        `, [id])
-        return results.rows;
-    },
-    getNames() {
-        return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
-    },
-    async file(id) {
-        let results = await db.query('SELECT file_id FROM chefs WHERE id = $1', [id])
-        const file_id = results.rows[0].file_id;
+        `,
+      [id]
+    );
+    return results.rows;
+  },
+  getNames() {
+    return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
+  },
+  async file(id) {
+    let results = await db.query("SELECT file_id FROM chefs WHERE id = $1", [
+      id,
+    ]);
+    const file_id = results.rows[0].file_id;
 
-        results = await db.query('SELECT * FROM files WHERE id = $1', [file_id])
-        return results.rows[0];
-        ;
-    }
-    // async delete(id) {
-    //     let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
-    //     const file_id = results.rows[0].file_id;
+    results = await db.query("SELECT * FROM files WHERE id = $1", [file_id]);
+    return results.rows[0];
+  },
+  // async delete(id) {
+  //     let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
+  //     const file_id = results.rows[0].file_id;
 
-    //     await File.delete(file_id);
+  //     await File.delete(file_id);
 
-    //     results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
-    //     const recipes = results.rows;
+  //     results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
+  //     const recipes = results.rows;
 
-    //     const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
-    //     await Promise.all(removedRecipes);
+  //     const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
+  //     await Promise.all(removedRecipes);
 
-    //     return
-    // },
-}
+  //     return
+  // },
+};
