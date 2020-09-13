@@ -59,8 +59,11 @@ module.exports = {
         const lastIndex = removedFiles.length - 1;
         removedFiles.splice(lastIndex, 1);
 
-        const removedFilesPromise = removedFiles.map((id) => File.delete(id));
-        await Promise.all(removedFilesPromise);
+        const filesPromise = removedFiles.map((id) => File.find(id));
+        await Promise.all(filesPromise).then(
+          async (files) =>
+            await DeleteFilesService.load("removeFiles", "", files)
+        );
       }
 
       const chefs = await LoadServiceChefs.load("chefs");
