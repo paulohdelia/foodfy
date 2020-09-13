@@ -7,6 +7,7 @@ module.exports = {
 
     const totalRecipes = 6;
 
+    // show only the first 6 recipes
     recipes = recipes.slice(0, totalRecipes);
 
     return res.render("main/home", {
@@ -26,16 +27,8 @@ module.exports = {
     if (req.query.filterRecipes) {
       filter = req.query.filterRecipes;
     }
-    const allParametes = filter == "" ? {} : { filter, orderBy: "updated_at" };
-    const results = await Recipe.all(allParametes);
-    let recipes = results.rows;
-    recipes = recipes.map((recipe) => ({
-      ...recipe,
-      src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
+
+    let recipes = await LoadServiceRecipes.load("recipes", filter);
 
     let info = {
       recipes,
@@ -49,24 +42,10 @@ module.exports = {
     return res.render("main/recipe/list", info);
   },
   async recipe(req, res) {
-    const results = await Recipe.find(req.params.id);
-
-    let files = results.rows;
-    files = files.map((file) => ({
-      ...file,
-      src: `${req.protocol}://${req.headers.host}${file.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
-
-    recipe = {
-      ...results.rows[0],
-    };
+    const recipe = await LoadServiceRecipes.load("recipe", req.params.id);
 
     return res.render("main/recipe/detail", {
       recipe,
-      files,
       link_style: "recipes",
     });
   },

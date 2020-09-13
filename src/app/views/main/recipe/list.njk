@@ -11,12 +11,12 @@
             <div class="card" id="{{ recipe.id }}">
                 <a href="/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
                 <h1>{{ recipe.title }}</h1>
-                <a href="/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
+                <a href="/chefs/{{recipe.chef_id}}">
+                    <p>por
+                        {{ recipe.chef_name }}</p>
+                </a>
             </div>
         {% endfor %}
     </div>
 
-    
-
-    
 {% endblock %}

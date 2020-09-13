@@ -16,16 +16,33 @@ const LoadService = {
   },
   async recipe() {
     try {
-      const recipe = await Recipe.findOne(this.filter);
+      let recipe = await Recipe.find(this.filter);
+      let files = await Recipe.files(this.filter);
 
-      return format(recipe);
+      if (files.length > 0) {
+        files = files.map(format);
+      } else {
+        files = [
+          {
+            name: "placeholder",
+            src: "http://placehold.it/720x480",
+          },
+        ];
+      }
+
+      recipe = {
+        ...recipe,
+        files,
+      };
+
+      return recipe;
     } catch (error) {
       console.error(error);
     }
   },
   async recipes() {
     try {
-      const recipes = await Recipe.findAll({ filter: this.filter });
+      const recipes = await Recipe.findAll(this.filter);
       const formattedrecipes = recipes.map(format);
 
       // use reverse to invert array and put last created first
