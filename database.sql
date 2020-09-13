@@ -70,16 +70,6 @@ ALTER TABLE "session"
 ADD CONSTRAINT "session_pkey" 
 PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
--- FOREIGN KEY
--- ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
--- 
--- ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
--- ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
--- 
--- ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
--- ALTER TABLE "recipes" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
--- CREATE PROCEDURE
 CREATE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -103,18 +93,3 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
-
--- CASCADE WHEN DELETE
--- ALTER TABLE "chefs"
--- DROP CONSTRAINT chefs_file_id_fkey,
--- ADD CONSTRAINT chefs_file_id_fkey
--- FOREIGN KEY ("file_id")
--- REFERENCES "files" ("id")
--- ON DELETE CASCADE;
-
--- ALTER TABLE "files"
--- DROP CONSTRAINT files_product_id_fkey,
--- ADD CONSTRAINT files_product_id_fkey
--- FOREIGN KEY ("product_id")
--- REFERENCES "products" ("id")
--- ON DELETE CASCADE;
