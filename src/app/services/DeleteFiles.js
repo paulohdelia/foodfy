@@ -24,7 +24,6 @@ const LoadService = {
     const files = this.files;
     deleteFiles(files);
   },
-  async chef() {},
   async recipe() {
     const files = await Recipe.files(this.filter);
     if (files.length > 0) {

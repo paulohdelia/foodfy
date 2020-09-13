@@ -41,7 +41,7 @@ module.exports = {
         SELECT * FROM (
             SELECT DISTINCT ON (recipes.id) 
             recipes.id, recipes.title, recipes.created_at,
-            files.path
+            files.path, files.id as file_id
             FROM recipes
             LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
             LEFT JOIN recipe_files ON (recipe_files.recipe_id = recipes.id)
@@ -68,18 +68,4 @@ module.exports = {
     results = await db.query("SELECT * FROM files WHERE id = $1", [file_id]);
     return results.rows[0];
   },
-  // async delete(id) {
-  //     let results = await db.query('DELETE FROM chefs WHERE id = $1 RETURNING file_id', [id]);
-  //     const file_id = results.rows[0].file_id;
-
-  //     await File.delete(file_id);
-
-  //     results = await db.query('SELECT id FROM recipes WHERE chef_id = $1', [id])
-  //     const recipes = results.rows;
-
-  //     const removedRecipes = recipes.map(recipe => Recipe.delete(recipe.id))
-  //     await Promise.all(removedRecipes);
-
-  //     return
-  // },
 };

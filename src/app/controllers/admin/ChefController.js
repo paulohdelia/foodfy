@@ -1,8 +1,7 @@
-const { unlinkSync } = require("fs");
-
 const Chef = require("../../models/Chef");
 const File = require("../../models/File");
 const LoadServiceChefs = require("../../services/LoadChefs");
+const DeleteFilesService = require("../../services/DeleteFiles");
 
 module.exports = {
   async index(req, res) {
@@ -78,27 +77,13 @@ module.exports = {
   },
   async delete(req, res) {
     try {
-      const chef_id = req.body.id;
+      const id = req.body.id;
 
-      const recipes = await LoadServiceChefs.load("recipes", chef_id);
-      recipes.forEach((recipe) => {
-        try {
-          unlinkSync(recipe.path);
-        } catch (err) {
-          console.error(err);
-        }
-      });
+      const files = await LoadServiceChefs.load("allFiles", id);
 
-      const file = await Chef.file(chef_id);
+      await Chef.delete(id);
 
-      try {
-        unlinkSync(file.path);
-      } catch (err) {
-        console.error(err);
-      }
-
-      await Chef.delete(chef_id);
-      await File.delete(file.id);
+      await DeleteFilesService.load("removeFiles", "", files);
 
       const chefs = await LoadServiceChefs.load("chefs");
       return res.render("admin/chef/list", {

@@ -1,4 +1,5 @@
 const Chef = require("../models/Chef");
+const Recipe = require("../models/Recipe");
 
 function format(value) {
   if (!value.path) {
@@ -39,6 +40,27 @@ const LoadService = {
       const formattedRecipes = recipes.map(format);
 
       return formattedRecipes;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async allFiles() {
+    try {
+      const file = await Chef.file(this.filter);
+      const recipes = await Chef.recipes(this.filter);
+
+      let files = [file];
+
+      if (recipes.length > 0) {
+        const recipesFilesPromise = recipes.map((recipe) =>
+          Recipe.files(recipe.id)
+        );
+
+        const recipesFiles = await Promise.all(recipesFilesPromise);
+        recipesFiles.forEach((recipe) => files.push(...recipe));
+      }
+
+      return files;
     } catch (error) {
       console.error(error);
     }
