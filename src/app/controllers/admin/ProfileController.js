@@ -20,10 +20,9 @@ module.exports = {
     } catch {
       return res.render("admin/profile/edit.njk", {
         user: req.body,
-        error: "Erro inesperado ao atualizar o perfil. Por favor, tente novamente.",
+        error:
+          "Erro inesperado ao atualizar o perfil. Por favor, tente novamente.",
       });
     }
-
-    return res.redirect("/admin/profile");
   },
 };
