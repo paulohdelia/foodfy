@@ -8,11 +8,12 @@ module.exports = {
   loginForm(req, res) {
     return res.render("session/login");
   },
-  login(req, res) {
+  async login(req, res) {
     req.session.userId = req.user.id;
     req.session.userIsAdmin = req.user.is_admin;
 
-    return res.redirect("/admin/profile");
+    const user = await User.findOne({ where: { id: req.user.id } });
+    return res.render("admin/profile/edit.njk", { user });
   },
   logout(req, res) {
     req.session.destroy();
