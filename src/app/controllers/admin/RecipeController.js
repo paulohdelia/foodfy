@@ -4,19 +4,11 @@ const Chef = require("../../models/Chef");
 const User = require("../../models/User");
 
 const LoadServiceRecipes = require("../../services/LoadRecipes");
+const DeleteFilesService = require("../../services/DeleteFiles");
 
 module.exports = {
   async index(req, res) {
-    let results = await Recipe.all({ orderBy: "created_at" });
-    let recipes = results.rows;
-
-    recipes = recipes.map((recipe) => ({
-      ...recipe,
-      src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
+    let recipes = await LoadServiceRecipes.load("recipes", "");
 
     // users can see only their recipes but admins can see all
     if (!req.session.userIsAdmin) {
@@ -27,16 +19,12 @@ module.exports = {
     return res.render("admin/recipe/list", { recipes });
   },
   async create(req, res) {
-    // Mostrar formulário de nova receita
-    const results = await Chef.getNames();
-    const chefs = results.rows;
+    const chefs = await Chef.getNames();
 
     return res.render("admin/recipe/create", { chefs });
   },
   async show(req, res) {
-    // Exibir detalhes de uma receita
-    const results = await Recipe.find(req.params.id);
-    const recipe = results.rows[0];
+    const recipe = await LoadServiceRecipes.load("recipe", req.params.id);
 
     if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
       const id = req.session.userId;
@@ -47,24 +35,15 @@ module.exports = {
       });
     }
 
-    let files = results.rows;
-    files = files.map((file) => ({
-      ...file,
-      src: `${req.protocol}://${req.headers.host}${file.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
-
-    return res.render("admin/recipe/detail", { recipe, files });
+    return res.render("admin/recipe/detail", { recipe });
   },
   async edit(req, res) {
-    // Mostrar formulários de edição de receita
-    let results = await Chef.getNames();
-    const chefs = results.rows;
+    const chefs = await Chef.getNames();
 
-    results = await Recipe.find(req.params.id);
-    const recipe = results.rows[0];
+    let recipe = await LoadServiceRecipes.load("recipe", req.params.id);
+    if (recipe.files[0].src === "http://placehold.it/720x480") {
+      recipe.files = [];
+    }
 
     if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
       const id = req.session.userId;
@@ -75,19 +54,9 @@ module.exports = {
       });
     }
 
-    let files = results.rows;
-    files = files.map((file) => ({
-      ...file,
-      src: `${req.protocol}://${req.headers.host}${file.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
-
-    return res.render("admin/recipe/edit", { recipe, chefs, files });
+    return res.render("admin/recipe/edit", { recipe, chefs });
   },
   async post(req, res) {
-    // Cadastrar nova receita
     try {
       const keys = Object.keys(req.body);
 
@@ -154,8 +123,7 @@ module.exports = {
         recipes,
         success: "Nova receita criada com sucesso",
       });
-    } catch (error) {
-      console.error(error);
+    } catch {
       return res.render("admin/recipe/create.njk", {
         recipe: req.body,
         error: "Erro inesperado, tente novamente.",
@@ -167,8 +135,7 @@ module.exports = {
     try {
       const id = req.body.id;
 
-      let results = await Recipe.find(id);
-      const recipe = results.rows[0];
+      const recipe = await LoadServiceRecipes.load("recipe", id);
 
       if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
         const id = req.session.userId;
@@ -180,15 +147,15 @@ module.exports = {
       }
 
       if (req.files.length > 0) {
-        const newFilesPromise = req.files.map((file) =>
-          File.create({ ...file })
-        );
-        let results = await Promise.all(newFilesPromise);
-
-        const recipeFilePromise = results.map((result) =>
+        const newFilesPromise = req.files.map((file) => {
+          const { filename, path } = file;
+          return File.create({ name: filename, path });
+        });
+        const filesIds = await Promise.all(newFilesPromise);
+        const recipeFilePromise = filesIds.map((file_id) =>
           Recipe.createOnRecipeFiles({
             recipe_id: req.body.id,
-            file_id: result.rows[0].id,
+            file_id,
           })
         );
         await Promise.all(recipeFilePromise);
@@ -199,22 +166,30 @@ module.exports = {
         const lastIndex = removedFiles.length - 1;
         removedFiles.splice(lastIndex, 1);
 
-        const removedFilesPromise = removedFiles.map((id) => File.delete(id));
-        await Promise.all(removedFilesPromise);
+        const filesPromise = removedFiles.map((id) => File.find(id));
+        await Promise.all(filesPromise).then(
+          async (files) =>
+            await DeleteFilesService.load("removeFiles", "", files)
+        );
       }
 
-      await Recipe.update(req.body);
+      const {
+        chef_id,
+        title,
+        ingredients,
+        preparation,
+        information,
+      } = req.body;
 
-      results = await Recipe.all({ orderBy: "created_at" });
-      let recipes = results.rows;
+      await Recipe.update(id, {
+        chef_id,
+        title,
+        ingredients: `{${ingredients}}`,
+        preparation: `{${preparation}}`,
+        information,
+      });
 
-      recipes = recipes.map((recipe) => ({
-        ...recipe,
-        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-          "public",
-          ""
-        )}`,
-      }));
+      let recipes = await LoadServiceRecipes.load("recipes", "");
 
       // users can see only their recipes but admins can see all
       if (!req.session.userIsAdmin) {
@@ -226,20 +201,21 @@ module.exports = {
         recipes,
         success: "Receita editada com sucesso",
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
+      const chefs = await Chef.getNames();
       return res.render("admin/recipe/create.njk", {
+        chefs,
         recipe: req.body,
         error: "Erro inesperado, tente novamente.",
       });
     }
   },
   async delete(req, res) {
-    // Deletar uma receita
     try {
       const id = req.body.id;
 
-      let results = await Recipe.find(id);
-      const recipe = results.rows[0];
+      const recipe = await LoadServiceRecipes.load("recipe", id);
 
       if (recipe.user_id != req.session.userId && !req.session.userIsAdmin) {
         const id = req.session.userId;
@@ -249,18 +225,10 @@ module.exports = {
           error: "Acesso negado!",
         });
       }
+
+      await DeleteFilesService.load("recipe", id);
       await Recipe.delete(id);
-
-      results = await Recipe.all({ orderBy: "created_at" });
-      let recipes = results.rows;
-
-      recipes = recipes.map((recipe) => ({
-        ...recipe,
-        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-          "public",
-          ""
-        )}`,
-      }));
+      let recipes = await LoadServiceRecipes.load("recipes", "");
 
       // users can see only their recipes but admins can see all
       if (!req.session.userIsAdmin) {
@@ -268,12 +236,12 @@ module.exports = {
           (recipe) => recipe.user_id == req.session.userId
         );
       }
+
       return res.render("admin/recipe/list", {
         recipes,
         success: "Receita removida com sucesso",
       });
-    } catch (err) {
-      console.error(err);
+    } catch {
       return res.render("admin/recipe/edit.njk", {
         recipe: req.body,
         error:

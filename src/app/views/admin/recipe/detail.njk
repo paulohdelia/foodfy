@@ -6,22 +6,29 @@
 
 {% block content %}
     <section>
-        <div class=title-btn>
-            <h1>Receita: {{ recipe.title }} </h1>
+        <div class="title-btn">
+            <h1>Receita:
+                {{ recipe.title }}
+            </h1>
             <span>
-                <a href="/admin/recipes/{{ recipe.id }}/edit"><button>Editar receita</button></a>
+                <a href="/admin/recipes/{{ recipe.id }}/edit">
+                    <button>Editar receita</button>
+                </a>
             </span>
         </div>
 
         <div class="card recipe">
-            <img src="{{ files[0].src }}" alt="{{ recipe.name }}">
+            <img src="{{ recipe.files[0].src }}" alt="{{ recipe.name }}">
             <div class="preview-gallery">
-                {%for file in files%}
+                {%for file in recipe.files%}
                     <img src="{{file.src}}" alt="recipe.name" {% if loop.index0 == 0 %} class="active" {% endif %} onclick="ImageGallery.setImage(event)">
                 {% endfor %}
             </div>
             <h1>{{ recipe.title }}</h1>
-            <a href="/admin/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
+            <a href="/admin/chefs/{{recipe.chef_id}}">
+                <p>por
+                    {{ recipe.chef_name }}</p>
+            </a>
         </div>
 
         <div class="recipe_content">

@@ -15,9 +15,14 @@ function deleteFiles(files) {
 }
 
 const LoadService = {
-  load(service, filter) {
+  load(service, filter, files) {
     this.filter = filter;
+    this.files = files;
     return this[service]();
+  },
+  removeFiles() {
+    const files = this.files;
+    deleteFiles(files);
   },
   async chef() {},
   async recipe() {

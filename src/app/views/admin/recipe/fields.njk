@@ -2,33 +2,23 @@
     <h2>Imagem da receita</h2>
     <div id="photos">
         <div id="photos-upload">
-            <input
-                id="photos-input"
-                type="file"
-                name="photos"
-                multiple
-                accept="image/*"  
-                onchange="PhotosUpload.handleFileInput(event)
-                "  
-            >
+            <input id="photos-input" type="file" name="photos" multiple="multiple" accept="image/*" onchange="PhotosUpload.handleFileInput(event)
+                ">
             <i class="material-icons">
                 add
             </i>
         </div>
-        {% if files %}
-            {% for image in files %}
-                <div class="photo" id="{{image.file_id}}">
+        {% if recipe.files %}
+            {% for image in recipe.files %}
+                <div class="photo" id="{{image.id}}">
                     <img src="{{image.src}}" alt="{{image.name}}">
-                    <i 
-                        class="material-icons"
-                        onclick="PhotosUpload.removeOldPhoto(event)"
-                    >
+                    <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">
                         close
                     </i>
                 </div>
             {% endfor %}
             <input type="hidden" name="removed_files">
-            <input type="hidden" name="initial_total_photos"> 
+            <input type="hidden" name="initial_total_photos">
         {% endif %}
     </div>
 </div>
@@ -37,7 +27,7 @@
     <h2>Chef</h2>
     <select name="chef_id">
         {% for chef in chefs %}
-            <option value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected {% endif %}>{{chef.name}}</option>
+            <option value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected="selected" {% endif %}>{{chef.name}}</option>
         {% endfor %}
     </select>
 </div>
@@ -86,5 +76,3 @@
     <h2>Informações adicionais</h2>
     <textarea name="information" cols="30" rows="10">{{recipe.information}}</textarea>
 </div>
-
-

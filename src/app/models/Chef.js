@@ -53,8 +53,11 @@ module.exports = {
     );
     return results.rows;
   },
-  getNames() {
-    return db.query("SELECT id, name FROM chefs ORDER BY name ASC");
+  async getNames() {
+    const results = await db.query(
+      "SELECT id, name FROM chefs ORDER BY name ASC"
+    );
+    return results.rows;
   },
   async file(id) {
     let results = await db.query("SELECT file_id FROM chefs WHERE id = $1", [

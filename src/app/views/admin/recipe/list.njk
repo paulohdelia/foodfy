@@ -5,7 +5,9 @@
         <div class="title-btn">
             <h1>Gerenciar receitas</h1>
             <span>
-                <a href="/admin/recipes/create"><button>Criar receita</button></a>
+                <a href="/admin/recipes/create">
+                    <button>Criar receita</button>
+                </a>
             </span>
         </div>
 
@@ -15,7 +17,10 @@
                     <a href="/admin/recipes/{{ recipe.id }}"><img src="{{ recipe.src }}" alt="{{ recipe.title }}"></a>
                     <div>
                         <h1>{{ recipe.title }}</h1>
-                        <a href="/admin/chefs/{{recipe.chef_id}}"><p>por {{ recipe.chef }}</p></a>
+                        <a href="/admin/chefs/{{recipe.chef_id}}">
+                            <p>por
+                                {{ recipe.chef_name }}</p>
+                        </a>
                         <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
                     </div>
                 </div>
