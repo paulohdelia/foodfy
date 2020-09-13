@@ -1,5 +1,4 @@
 const db = require("../../config/db");
-const File = require("../models/File");
 
 const Base = require("./Base");
 Base.init({ table: "recipes" });

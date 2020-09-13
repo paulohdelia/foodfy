@@ -1,4 +1,3 @@
-const Recipe = require("../../models/Recipe");
 const LoadServiceRecipes = require("../../services/LoadRecipes");
 
 module.exports = {
