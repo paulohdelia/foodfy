@@ -1,14 +1,14 @@
-const db = require('../../config/db');
+const db = require("../../config/db");
 
 function find(filters, table) {
   let query = `SELECT * FROM ${table}`;
 
   if (filters) {
-    Object.keys(filters).map(key => {
+    Object.keys(filters).map((key) => {
       // WHERE | OR | AND
       query += ` ${key}`;
 
-      Object.keys(filters[key]).map(field => {
+      Object.keys(filters[key]).map((field) => {
         query += ` ${field} = '${filters[key][field]}'`;
       });
     });
@@ -19,7 +19,7 @@ function find(filters, table) {
 
 const Base = {
   init({ table }) {
-    if (!table) throw new Error('Invalid Params');
+    if (!table) throw new Error("Invalid Params");
 
     this.table = table;
 
@@ -42,13 +42,13 @@ const Base = {
       let keys = [],
         values = [];
 
-      Object.keys(fields).map(key => {
+      Object.keys(fields).map((key) => {
         keys.push(key);
         values.push(`'${fields[key]}'`);
       });
 
-      const query = `INSERT INTO ${this.table} (${keys.join(',')}) 
-        VALUES (${values.join(',')})
+      const query = `INSERT INTO ${this.table} (${keys.join(",")}) 
+        VALUES (${values.join(",")})
         RETURNING id
       `;
 
@@ -62,12 +62,14 @@ const Base = {
     try {
       let update = [];
 
-      Object.keys(fields).map(key => {
+      Object.keys(fields).map((key) => {
         const setField = `${key} = '${fields[key]}'`;
         update.push(setField);
       });
 
-      let query = `UPDATE ${this.table} SET ${update.join(',')} WHERE id = ${id}`;
+      let query = `UPDATE ${this.table} SET ${update.join(
+        ","
+      )} WHERE id = ${id}`;
 
       return db.query(query);
     } catch (error) {
@@ -75,8 +77,8 @@ const Base = {
     }
   },
   delete(id) {
-    return db.query(`DELETE FROM ${this.table} WHERE id = $1`, [id])
+    return db.query(`DELETE FROM ${this.table} WHERE id = $1`, [id]);
   },
-}
+};
 
 module.exports = Base;

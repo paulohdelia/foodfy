@@ -1,7 +1,7 @@
 const Recipe = require("../models/Recipe");
 
 function format(value) {
-  if (!value.src) {
+  if (!value.path) {
     value.src = "http://placehold.it/720x480";
   } else {
     value.src = value.path.replace("public", "").replace(/\\/g, "/");
@@ -28,7 +28,8 @@ const LoadService = {
       const recipes = await Recipe.findAll({ filter: this.filter });
       const formattedrecipes = recipes.map(format);
 
-      return formattedrecipes;
+      // use reverse to invert array and put last created first
+      return formattedrecipes.reverse();
     } catch (error) {
       console.error(error);
     }

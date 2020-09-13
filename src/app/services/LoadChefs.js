@@ -1,7 +1,11 @@
 const Chef = require("../models/Chef");
 
 function format(value) {
-  value.src = value.path.replace("public", "").replace(/\\/g, "/");
+  if (!value.path) {
+    value.src = "http://placehold.it/720x480";
+  } else {
+    value.src = value.path.replace("public", "").replace(/\\/g, "/");
+  }
   return value;
 }
 

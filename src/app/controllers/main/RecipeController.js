@@ -1,17 +1,13 @@
 const Recipe = require("../../models/Recipe");
+const LoadServiceRecipes = require("../../services/LoadRecipes");
 
 module.exports = {
   async index(req, res) {
-    const results = await Recipe.all({ limit: 6 });
+    let recipes = await LoadServiceRecipes.load("recipes", "");
 
-    let recipes = results.rows;
-    recipes = recipes.map((recipe) => ({
-      ...recipe,
-      src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-        "public",
-        ""
-      )}`,
-    }));
+    const totalRecipes = 6;
+
+    recipes = recipes.slice(0, totalRecipes);
 
     return res.render("main/home", {
       recipes,
