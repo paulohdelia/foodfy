@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "seeds": "node seeds.js"
   },
   "author": {
     "name": "Paulo D'Elia",
