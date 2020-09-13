@@ -2,6 +2,8 @@ const User = require("../../models/User");
 const mailer = require("../../../lib/mailer");
 const crypto = require("crypto");
 
+const DeleteFilesService = require("../../services/DeleteFiles");
+
 module.exports = {
   async list(req, res) {
     try {
@@ -90,7 +92,11 @@ module.exports = {
     try {
       const id = req.body.id;
 
+      const files = await User.files(id);
+
       await User.delete(id);
+
+      await DeleteFilesService.load("removeFiles", "", files);
 
       const users = await User.findAll();
       return res.render("admin/users/list.njk", {
