@@ -3,6 +3,8 @@ const Recipe = require("../../models/Recipe");
 const Chef = require("../../models/Chef");
 const User = require("../../models/User");
 
+const LoadServiceRecipes = require("../../services/LoadRecipes");
+
 module.exports = {
   async index(req, res) {
     let results = await Recipe.all({ orderBy: "created_at" });
@@ -109,9 +111,24 @@ module.exports = {
         });
       }
 
-      const userId = req.session.userId;
-      let results = await Recipe.create(req.body, { userId });
-      const recipeId = results.rows[0].id;
+      const user_id = req.session.userId;
+
+      const {
+        chef_id,
+        title,
+        ingredients,
+        preparation,
+        information,
+      } = req.body;
+
+      const recipe_id = await Recipe.create({
+        chef_id,
+        user_id,
+        title,
+        ingredients: `{${ingredients}}`,
+        preparation: `{${preparation}}`,
+        information,
+      });
 
       const filePromise = req.files.map((file) => {
         const { filename, path } = file;
@@ -121,28 +138,17 @@ module.exports = {
 
       const recipeFilePromise = files_id.map((file_id) =>
         Recipe.createOnRecipeFiles({
-          recipe_id: recipeId,
-          file_id: file_id,
+          recipe_id,
+          file_id,
         })
       );
       await Promise.all(recipeFilePromise);
 
-      results = await Recipe.all({ orderBy: "created_at" });
-      let recipes = results.rows;
-
-      recipes = recipes.map((recipe) => ({
-        ...recipe,
-        src: `${req.protocol}://${req.headers.host}${recipe.path.replace(
-          "public",
-          ""
-        )}`,
-      }));
+      let recipes = await LoadServiceRecipes.load("recipes", "");
 
       // users can see only their recipes but admins can see all
       if (!req.session.userIsAdmin) {
-        recipes = recipes.filter(
-          (recipe) => recipe.user_id == req.session.userId
-        );
+        recipes = recipes.filter((recipe) => recipe.user_id == user_id);
       }
       return res.render("admin/recipe/list", {
         recipes,
