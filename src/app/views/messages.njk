@@ -5,7 +5,10 @@
     <script>
       setTimeout(() => {
         const inputs = document.querySelectorAll('input');
+        const textareas = document.querySelectorAll('textarea');
+
         inputs.forEach(input => input.style.border = "1px solid red")
+        textareas.forEach(textarea => textarea.style.border = "1px solid red")
       }, 1)
     </script>
   </div>

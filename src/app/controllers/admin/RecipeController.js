@@ -58,28 +58,6 @@ module.exports = {
   },
   async post(req, res) {
     try {
-      const keys = Object.keys(req.body);
-
-      for (key of keys) {
-        if (req.body[key] == "" && key != "removed_files") {
-          const results = await Chef.getNames();
-          const chefs = results.rows;
-
-          return res.render("admin/recipe/create.njk", {
-            chefs,
-            recipe: req.body,
-            error: "Por favor, preecha todos os campos",
-          });
-        }
-      }
-
-      if (req.files.length == 0) {
-        return res.render("admin/recipe/create.njk", {
-          recipe: req.body,
-          error: "Por favor, envia ao menos uma imagem",
-        });
-      }
-
       const user_id = req.session.userId;
 
       const {
